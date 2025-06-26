@@ -1,0 +1,424 @@
+<html>
+<head>
+<title>How to create a preview button ?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+ <style type="text/css">
+    <!--
+      BODY {
+        color: #000000;
+      } /* default */
+      span.variable-name {
+        color: #8b008b;
+      } /* font-lock-variable-name-face */
+      span.function-name {
+        color: #8b2323;
+      } /* font-lock-function-name-face */
+      span.preprocessor {
+        color: #0000cd;
+      } /* font-lock-preprocessor-face */
+      span.string {
+        color: #008b00;
+      } /* font-lock-string-face */
+      span.type {
+        color: #4682b4;
+      } /* font-lock-type-face */
+      span.comment {
+        color: #00008b;
+      } /* font-lock-comment-face */
+    -->
+    </style>
+</head>
+
+<body bgcolor="#FFFFFF">
+<table border="0" cellpadding="0" cellspacing="0" align="center" width="976">
+  <tr> 
+    <td height="39" colspan="4"><img src="../../Pictures/gui_topbar_title.gif" width="361" height="109" name="TVPaint2SDK"></td>
+    <td rowspan="2" width="63%"><img src="../../Pictures/Title_howto.gif" width="615" height="204" name="Chapter"></td>
+  </tr>
+  <tr> 
+    <td width="19%"><a href="FileRequester.htm"><img src="../../Pictures/gui_topbar_prev_us.gif" width="95" height="95" name="Previous" border="0"></a></td>
+    <td width="18%" height="42"><a href="ImageButton.htm"><img src="../../Pictures/gui_topbar_next_us.gif" width="89" height="95" name="Next" border="0"></a></td>
+    <td width="0%" height="42"><a href="../ExMain.htm"><img src="../../Pictures/gui_topbar_up_us.gif" width="89" height="95" name="Parent" border="0"></a></td>
+    <td width="0%" height="42"><a href="../../TOC.htm"><img src="../../Pictures/gui_topbar_toc_us.gif" width="88" height="95" name="TableOfContent" border="0"></a></td>
+  </tr>
+</table>
+<h1 align="center">How to create a preview button ? </h1>
+<h1 align="center">&nbsp;</h1>
+<blockquote> 
+  <p>This section explains how to create a preview button for TVPaint with a full 
+    preview display inside. <br>
+    (Foreground and Background layers are merged with the preview). <br>
+  </p>
+  <p>You first create a new Preview object by calling PreviewNew(). This function 
+    creates the preview button.<br>
+    To start a preview, you call p-&gt;StartPreview( p, filter ).<br>
+    Compute your preview by using p-&gt;mSrc as source, and p-&gt;mDst as destination.<br>
+    Then call p-&gt;FinishPreview( p, filter ) to display the preview.<br>
+    You can dispose of an unused Preview object with PreviewDelete(). </p>
+  <hr>
+  <h2><b>preview.h</b></h2>
+  <pre><span class="comment">// A preview &quot;object&quot;
+</span>
+
+<span class="preprocessor">#ifndef</span> <span class="variable-name">__preview_H</span>
+<span class="preprocessor">#define</span> <span class="variable-name">__preview_H</span>
+
+
+<span class="preprocessor">#include</span>  &quot;<span class="string">plugdllx.h</span>&quot;
+
+
+<span class="type">typedef</span> <span class="type">struct</span> <span class="function-name">Preview</span>
+{
+	DWORD  mReq;
+	DWORD  mID;
+	<span class="type">int</span>    <span class="variable-name">mX</span>;
+	<span class="type">int</span>    <span class="variable-name">mY</span>;
+	<span class="type">int</span>    <span class="variable-name">mSize</span>;
+
+	PIBlock*  mSrc;
+	PIBlock*  mDst;
+
+	<span class="comment">// methods
+</span>	<span class="type">int</span>  (*StartPreview)( <span class="type">struct</span> Preview* <span class="variable-name">ioPreview</span>, <span class="variable-name">PIFilter</span>* iFilter );
+	<span class="type">int</span>  (*FinishPreview)( <span class="type">struct</span> Preview* <span class="variable-name">ioPreview</span>, <span class="variable-name">PIFilter</span>* iFilter );
+
+} <span class="variable-name">Preview</span>;
+
+
+<span class="type">extern</span>  Preview*  <span class="function-name">PreviewNew</span>( PIFilter* iFilter, DWORD iReq, DWORD iID, <span class="type">int</span> <span class="variable-name">iX</span>, <span class="type">int</span> <span class="variable-name">iY</span>, <span class="type">int</span> <span class="variable-name">iSize</span> );
+<span class="type">extern</span>  <span class="type">void</span>      <span class="function-name">PreviewDelete</span>( PIFilter* iFilter, Preview* iPreview );
+
+
+<span class="preprocessor">#endif</span>
+</pre>
+  <hr>
+
+  <h2><b>preview.c</b></h2>
+  <pre>
+
+<span class="preprocessor">#include</span> &lt;<span class="string">stdio.h</span>&gt;
+<span class="preprocessor">#include</span> &quot;<span class="string">preview.h</span>&quot;
+
+
+<span class="type">static</span> <span class="variable-name">PIBlock</span> *
+<span class="function-name">MakeIcon</span>( PIFilter* iFilter, PIBlock* iSrc, <span class="type">int</span> <span class="variable-name">iSize</span> )
+{
+    <span class="type">double</span>  <span class="variable-name">r</span> = iSize / (<span class="type">double</span>)MAX( iSrc-&gt;Width, iSrc-&gt;Height );
+
+    PIBlock*  icon = TVAllocPIBlock( iFilter, (<span class="type">int</span>)(iFilter-&gt;ImageWidth*r), (<span class="type">int</span>)(iFilter-&gt;ImageHeight*r), 0 );
+
+    <span class="keyword">if</span>( icon )
+    {
+        <span class="type">int</span>       <span class="variable-name">y</span>;
+        <span class="type">double</span>    <span class="variable-name">ix</span> = iSrc-&gt;Width /(<span class="type">double</span>)icon-&gt;Width;
+        <span class="type">double</span>    <span class="variable-name">iy</span> = iSrc-&gt;Height/(<span class="type">double</span>)icon-&gt;Height;
+        <span class="type">double</span>    <span class="variable-name">sy</span> = 0;
+        PIPixel*  dst = icon-&gt;Data;
+
+        <span class="keyword">for</span>( y = 0; y &lt; icon-&gt;Height; ++y )
+        {
+            <span class="type">int</span>       <span class="variable-name">x</span>;
+            PIPixel*  src = iSrc-&gt;Data + (<span class="type">int</span>)sy*iSrc-&gt;Width;
+            <span class="type">double</span>    <span class="variable-name">sx</span> = 0;
+
+            <span class="keyword">for</span>( x = 0; x &lt; icon-&gt;Width; ++x )
+            {
+                *dst++ = src[(<span class="type">int</span>)sx];
+                sx += ix;
+            }
+            sy += iy;
+        }
+        <span class="keyword">return</span>  icon;
+    }
+
+    <span class="keyword">return</span>  NULL;
+}
+
+
+<span class="type">static</span> <span class="type">int</span>
+<span class="function-name">MakeBGBlock</span>( PIFilter* iFilter, PIBlock* ioImg )
+{
+    <span class="type">char</span>  <span class="variable-name">result</span>[512];
+
+    PIPixel*  line = (PIPixel*)malloc( iFilter-&gt;ImageWidth*sizeof(PIPixel) );
+    <span class="keyword">if</span>( line )
+    {
+		<span class="type">int</span>  <span class="variable-name">y</span>;
+
+		<span class="type">double</span>  <span class="variable-name">steph</span> = iFilter-&gt;ImageWidth /(<span class="type">double</span>)ioImg-&gt;Width;
+		<span class="type">double</span>  <span class="variable-name">stepv</span> = iFilter-&gt;ImageHeight/(<span class="type">double</span>)ioImg-&gt;Height;
+
+		<span class="type">int</span>  <span class="variable-name">pr</span> = ioImg-&gt;r;
+		<span class="type">int</span>  <span class="variable-name">pg</span> = ioImg-&gt;g;
+		<span class="type">int</span>  <span class="variable-name">pb</span> = ioImg-&gt;b;
+		<span class="type">int</span>  <span class="variable-name">pa</span> = ioImg-&gt;a;
+
+		<span class="keyword">for</span>( y = 0; y &lt; ioImg-&gt;Height; ++y )
+		{
+			<span class="type">int</span>  <span class="variable-name">x</span>;
+
+			<span class="type">double</span>    <span class="variable-name">pos</span> = 0.0;
+			PIPixel*  data = &amp;ioImg-&gt;Data[y*ioImg-&gt;Width];
+
+			<span class="keyword">if</span>( TVReadLayerData( iFilter, line, 0, (<span class="type">int</span>)(y*stepv), iFilter-&gt;ImageWidth, 1, 0, CB_READ_BACK ) == 0 )
+			{
+				<span class="keyword">break</span>;
+			}
+
+			<span class="keyword">for</span>( x = ioImg-&gt;Width; x; --x )
+			{
+				PIPixel  p = line[(<span class="type">int</span>)pos];
+
+				<span class="keyword">if</span>( data-&gt;c[pa] != 255 )
+				{
+					<span class="keyword">if</span>( data-&gt;c[pa] == 0 )
+					{
+						*data = p;
+					}
+					<span class="keyword">else</span>
+					{
+						<span class="type">int</span> <span class="variable-name">a</span> = 255-data-&gt;c[pa];
+						data-&gt;c[pr] += (p.c[pr]*a)/255;
+						data-&gt;c[pg] += (p.c[pg]*a)/255;
+						data-&gt;c[pb] += (p.c[pb]*a)/255;
+						data-&gt;c[pa] += (p.c[pa]*a)/255;
+					}
+
+				}
+				data++;
+				pos += steph;
+			}
+		}
+
+		free( line );
+
+		TVSendCmd( iFilter, &quot;<span class="string">tv_BackGround</span>&quot;, result );
+		<span class="keyword">if</span>( !strncasecmp( result, &quot;<span class="string">color</span>&quot;, 5 )  ||  !strncasecmp( result, &quot;<span class="string">check</span>&quot;, 5 ) )
+		{
+			<span class="type">int</span>  <span class="variable-name">red1</span>, <span class="variable-name">green1</span>, <span class="variable-name">blue1</span>;
+			<span class="type">int</span>  <span class="variable-name">red2</span>, <span class="variable-name">green2</span>, <span class="variable-name">blue2</span>;
+			<span class="type">int</span>  <span class="variable-name">na</span>;
+
+			<span class="type">int</span>  <span class="variable-name">ch</span> = !strncasecmp( result, &quot;<span class="string">check</span>&quot;, 5 );
+
+			PIPixel*  data = ioImg-&gt;Data;
+			<span class="type">unsigned</span> <span class="type">char</span>*  <span class="variable-name">r</span> = &amp;data-&gt;c[ioImg-&gt;r];
+			<span class="type">unsigned</span> <span class="type">char</span>*  <span class="variable-name">g</span> = &amp;data-&gt;c[ioImg-&gt;g];
+			<span class="type">unsigned</span> <span class="type">char</span>*  <span class="variable-name">b</span> = &amp;data-&gt;c[ioImg-&gt;b];
+			<span class="type">unsigned</span> <span class="type">char</span>*  <span class="variable-name">a</span> = &amp;data-&gt;c[ioImg-&gt;a];
+
+			sscanf( &amp;result[5], &quot;<span class="string">%d %d %d %d %d %d</span>&quot;, &amp;red1, &amp;green1, &amp;blue1, &amp;red2, &amp;green2, &amp;blue2 );
+
+			<span class="keyword">for</span>( y = 0; y &lt; ioImg-&gt;Height; ++y )
+			{
+				<span class="type">int</span>  <span class="variable-name">x</span>;
+				<span class="keyword">for</span>( x = ioImg-&gt;Width; x; --x )
+				{
+					<span class="keyword">if</span>( ch  &amp;&amp;  (((x&gt;&gt;4)+(y&gt;&gt;4))&amp;1) )
+					{
+						<span class="keyword">if</span>( *a == 0 )
+						{
+							*r = red2;
+							*g = green2;
+							*b = blue2;
+							*a = 255;
+						}
+						<span class="keyword">else</span> <span class="keyword">if</span>( *a != 255 )
+						{
+							na = 255 - *a;
+							*r += red2  *na/255;
+							*g += green2*na/255;
+							*b += blue2 *na/255;
+							*a = 255;
+						}
+
+					}
+					<span class="keyword">else</span>
+					{
+						<span class="keyword">if</span>( *a == 0 )
+						{
+							*r = red1;
+							*g = green1;
+							*b = blue1;
+							*a = 255;
+						}
+						<span class="keyword">else</span> <span class="keyword">if</span>( *a != 255 )
+						{
+							na = 255 - *a;
+							*r += red1  *na/255 ;
+							*g += green1*na/255;
+							*b += blue1 *na/255;
+							*a = 255;
+						}
+					}
+					r += 4;
+					g += 4;
+					b += 4;
+					a += 4;
+				}
+			}
+		}
+		<span class="keyword">return</span>  1;
+    }
+
+	<span class="keyword">return</span>  0;
+}
+
+
+<span class="type">static</span> <span class="type">int</span>
+<span class="function-name">MakeFGBlock</span>( PIFilter* iFilter, PIBlock* ioImg )
+{
+    PIPixel*  line = (PIPixel*)malloc( iFilter-&gt;ImageWidth*sizeof(PIPixel) );
+    <span class="keyword">if</span>( line )
+    {
+		<span class="type">int</span>  <span class="variable-name">y</span>;
+
+		<span class="type">double</span>  <span class="variable-name">steph</span> = iFilter-&gt;ImageWidth /(<span class="type">double</span>)ioImg-&gt;Width;
+		<span class="type">double</span>  <span class="variable-name">stepv</span> = iFilter-&gt;ImageHeight/(<span class="type">double</span>)ioImg-&gt;Height;
+
+		<span class="type">int</span>  <span class="variable-name">pr</span> = ioImg-&gt;r;
+		<span class="type">int</span>  <span class="variable-name">pg</span> = ioImg-&gt;g;
+		<span class="type">int</span>  <span class="variable-name">pb</span> = ioImg-&gt;b;
+		<span class="type">int</span>  <span class="variable-name">pa</span> = ioImg-&gt;a;
+
+		<span class="keyword">for</span>( y = 0; y &lt; ioImg-&gt;Height; ++y )
+		{
+			<span class="type">int</span>  <span class="variable-name">x</span>;
+
+			PIPixel*  data = &amp;ioImg-&gt;Data[y*ioImg-&gt;Width];
+			<span class="type">double</span>    <span class="variable-name">pos</span> = 0.0;
+
+			<span class="keyword">if</span>( TVReadLayerData( iFilter, line, 0, (<span class="type">int</span>)(y*stepv), iFilter-&gt;ImageWidth, 1, 0, CB_READ_FRONT ) == 0 )
+			{
+				<span class="keyword">break</span>;
+			}
+
+			<span class="keyword">for</span>( x = ioImg-&gt;Width; x; --x )
+			{
+				PIPixel  p = line[(<span class="type">int</span>)pos];
+
+				<span class="keyword">if</span>( p.c[pa] != 0 )
+				{
+					<span class="keyword">if</span>( p.c[pa] == 255 )
+					{
+						*data = p;
+					}
+					<span class="keyword">else</span>
+					{
+						<span class="type">int</span>  <span class="variable-name">a</span> = 255-p.c[pa];
+						data-&gt;c[pr] = p.c[pr] + (data-&gt;c[pr]*a)/255;
+						data-&gt;c[pg] = p.c[pg] + (data-&gt;c[pg]*a)/255;
+						data-&gt;c[pb] = p.c[pb] + (data-&gt;c[pb]*a)/255;
+						data-&gt;c[pa] = p.c[pa] + (data-&gt;c[pa]*a)/255;
+					}
+				}
+				data++;
+				pos += steph;
+			}
+		}
+
+		free( line );
+		<span class="keyword">return</span>  1;
+    }
+
+	<span class="keyword">return</span>  0;
+}
+
+
+
+
+<span class="type">static</span> <span class="type">int</span>
+<span class="function-name">StartPreview</span>( Preview* ioPreview, PIFilter* iFilter )
+{
+    <span class="keyword">if</span>( ioPreview-&gt;mSrc )
+    {
+        TVFreePIBlock( iFilter, ioPreview-&gt;mSrc );
+    }
+
+    ioPreview-&gt;mSrc = MakeIcon( iFilter, iFilter-&gt;Current, ioPreview-&gt;mSize );
+
+    <span class="keyword">if</span>( ioPreview-&gt;mSrc )
+    {
+        <span class="keyword">if</span>( ioPreview-&gt;mDst )
+        {
+            TVFreePIBlock( iFilter, ioPreview-&gt;mDst );
+        }
+
+        ioPreview-&gt;mDst = TVAllocPIBlock( iFilter, ioPreview-&gt;mSrc-&gt;Width, ioPreview-&gt;mSrc-&gt;Height, 0 );   <span class="comment">/* Creates the PIBlock (Destination) for storing theresult */
+</span>
+        <span class="keyword">if</span>( ioPreview-&gt;mDst )
+        {
+            <span class="keyword">return</span>  1;
+        }
+        <span class="keyword">else</span>
+        {
+            TVFreePIBlock( iFilter, ioPreview-&gt;mSrc );
+        }
+    }
+
+    <span class="keyword">return</span>  0;
+}
+
+
+<span class="type">static</span> <span class="type">int</span>
+<span class="function-name">FinishPreview</span>( Preview* ioPreview, PIFilter* iFilter )
+{
+    if(!MakeBGBlock( iFilter, ioPreview-&gt;mDst ))
+		return 0;
+    if(!MakeFGBlock( iFilter, ioPreview-&gt;mDst ))
+		return 0;
+
+	TVPutButtonImage( iFilter, ioPreview-&gt;mReq, ioPreview-&gt;mID, ioPreview-&gt;mDst, 0 );
+	ioPreview-&gt;mDst = 0;
+
+	return 1;
+}
+
+
+<span class="comment">////////////////////////////////////////////////////////////////////////////////////////
+</span>
+
+<span class="type">Preview</span>*
+<span class="function-name">PreviewNew</span>( PIFilter* iFilter, DWORD iReq, DWORD iID, <span class="type">int</span> <span class="variable-name">iX</span>, <span class="type">int</span> <span class="variable-name">iY</span>, <span class="type">int</span> <span class="variable-name">iSize</span> )
+{
+	Preview*  preview = malloc( sizeof(Preview) );
+	
+	preview-&gt;mReq  = iReq;
+	preview-&gt;mID   = iID;
+	preview-&gt;mX    = iX;
+	preview-&gt;mY    = iY;
+	preview-&gt;mSize = iSize;
+
+	preview-&gt;mSrc = NULL;
+	preview-&gt;mDst = NULL;
+
+	preview-&gt;StartPreview  = StartPreview;
+	preview-&gt;FinishPreview = FinishPreview;
+
+	TVAddButtonReq( iFilter, iReq, iX, iY, iSize, iSize, iID, PIRBF_BUTTON_INVERT|PIRBF_BUTTON_QUIET, NULL );
+<span class="comment">
+</span>	<span class="keyword">return</span>  preview;
+}
+
+
+<span class="type">void</span>
+<span class="function-name">PreviewDelete</span>( PIFilter* iFilter, Preview* iPreview )
+{
+	TVRemoveButtonReq( iFilter, iPreview-&gt;mReq, iPreview-&gt;mID );
+
+    <span class="keyword">if</span>( iPreview-&gt;mSrc )
+    {
+        TVFreePIBlock( iFilter, iPreview-&gt;mSrc );
+    }
+
+	<span class="keyword">if</span>( iPreview-&gt;mDst )
+	{
+		TVFreePIBlock( iFilter, iPreview-&gt;mDst );
+	}
+
+	free( iPreview );
+}
+</pre>
+  </blockquote>
+</body>
+</html>

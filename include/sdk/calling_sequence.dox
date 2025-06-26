@@ -1,0 +1,96 @@
+/** @copyright (c) 1995-25 TVPaint Developpement. All Rights Reserved.
+
+@page  calling_sequence  Calling Sequence
+
+
+
+@section  sec_calling_sequence_intro  Introduction.
+
+Plugins are dynamic libraries (bundles on macosx, DSOs on linux, DLLs on windows).
+
+They should define and export the following entry points.
+
+@ref  PI_Open() and PI_Close() are mandatory, although most often you need more than those two.
+
+
+
+@section  sec_global_lifetime  The overall calling sequence for all plugins.
+
+When TVPaint launches, it calls PI_Open() on every plugin, and when it shutdowns it calls PI_Close().
+
+Inbetween these two calls, any of PI_About(), PI_Parameters() and PI_Msg() can be called any number of times in any order.
+
+
+@subsection  sub_PI_Open  @ref  int  PI_Open( PIFilter*  iPlugin );
+When TVPaint (or another host implementing this SDK) loads a plugin, it calls PI_Open().
+This function is responsible for filling in the following fields :
+- PIVersion, PIRevision: version/revision of the plugin
+- PIName: name of the plugin (which will appear in the 'Filter' menu)
+
+Usually this function also opens the file containing localized messages (you need it to fill in the PIName field of PIFilter).
+
+It should also open the plugin's window if it was open the last time TVPaint was shut down.
+
+
+@subsection  sub_PI_About  @ref  void  PI_About( PIFilter*  iPlugin );
+This will be called when the user asks for some information about the plugin.
+It can simply not exists and nothing bad will happen.
+It can be as simple as a call to TVWarning with an info string,
+or as complex as a whole new window with animations, etc... its up to you (and your ego :) ). 
+
+@subsection  sub_PI_Parameters  @ref int  PI_Parameters( PIFilter*  iPlugin, const char*  iArgs );
+PI_Parameters() can be called in two (three actually...) ways :
+- iArgs is NULL : the plugin has been selected in the "Windows > Plugins" main menu. It should open a window for the user to interact with.
+- iArgs is non-NULL : iArgs contains a 'parameter string', which will be interpreted by the plugin in its own way.\n
+This happens in two cases :
+    - through a call to "tv_filter" in a George script (or the call TVSendCmd() in another plugin).
+    - the user selected an alias of your filter in the "Windows > Plugins" menu (aliases are explained in TVCreateAlias()).
+The plugin should do the computation right now by initializing whatever data it needs and calling TVExecute().
+
+
+@subsection  sub_PI_Msg  @ref  int  PI_Msg( PIFilter*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPTR*  iArgs );
+PI_Msg() is called by TVPaint whenever something of interest to the plugin happens :
+- PICMETA_\* messages are always sent to this function.
+- PICBREQ_\* messages are only sent to this function if the window to which they belong was created without a specific function to handle messages.
+
+
+@subsection  sub_PI_Close  @ref  void  PI_Close( PIFilter*  iPlugin );
+When TVPaint shuts down, it calls PI_Close().
+
+In this function you should do some cleanup, like closing the locale-file, freeing all the memory you allocated (don't forget the keys !).
+
+
+
+@section  sec_applying_a_filter  When applying a filter.
+
+When the plugin calls TVExecute(), TVPaint will prepare the execution of a filter, then calls the following functions, in this order, in your plugin :
+- PI_SequenceStart() with the total number of frames to be processed (depending on the selection the user has done in TVPaint).
+- For each of these frames, it will then call :
+    - PI_Start()
+    - PI_Work()
+    - PI_Finish()
+- PI_SequenceFinish().
+
+@subsection  sub_PI_SequenceStart  @ref  int  PI_SequenceStart( PIFilter*  iPlugin, int  iCount );
+
+Here you allocate and/or initialize everything that is constant throughout all frames.
+
+@subsection  sub_PI_Start  @ref  int  PI_Start( PIFilter*  iPlugin, double  iPos, double  iSize );
+
+Here, you allocate and/or initialize data for processing this frame.
+@todo //TODO: try to explain why iPos and iSize are doubles !?!?!?!??!?!
+
+@subsection  sub_PI_Work  @ref  int  PI_Work( PIFilter*  iPlugin );
+
+Here, you actually modify the image (and you DON'T in ANY of the other functions !).
+
+@subsection  sub_PI_Finish  @ref  void  PI_Finish( PIFilter*  iPlugin );
+
+Here, you clean up what you've done in PI_Start().
+
+@subsection  sub_PI_SequenceFinish  @ref  void  PI_SequenceFinish( PIFilter*  iPlugin );
+
+Here, you clean up what you've done in PI_SequenceStart().
+
+
+*/

@@ -1,0 +1,10 @@
+LIBRARY      iprint
+DESCRIPTION  'TVPaint plugin iprint.dll'
+
+EXPORTS
+  PI_Msg
+  PI_Open
+  PI_Close
+  PI_About
+  PI_Parameters
+  

@@ -1,0 +1,9 @@
+NAME        VideoDevice.dll
+DESCRIPTION 'TVPaint Plugin Video Device Example'
+
+EXPORTS
+    PI_Open
+	PI_Msg
+	PI_About
+	PI_Parameters
+	PI_Close
