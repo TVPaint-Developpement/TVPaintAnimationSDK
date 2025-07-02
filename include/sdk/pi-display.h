@@ -13,7 +13,7 @@
 /** @brief  The version of the PIDisplay API. */
 #define  PIDISPLAY_VERSION  300
 
-
+#include "pi-pixel.h"
 #include "pi-videodevice.h"
 
 
