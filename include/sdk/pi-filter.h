@@ -12,6 +12,9 @@
 
 #include "pi-basics.h"
 
+#if defined(_WIN64)
+#include <Windows.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
