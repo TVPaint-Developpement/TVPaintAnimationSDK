@@ -55,8 +55,6 @@ extern "C" {
 // _WIN64 is *the only one* to use : https://learn.microsoft.com/en-us/cpp/preprocessor/predefined-macros
 #ifdef _WIN64
 
-#include <windows.h>
-
 /** @brief  An unsigned 64bit integer. */
 typedef  unsigned _int64  PIUInt64;
 /** @brief  Integral Ptr. Used to cast ptr to arithmetic type. BUT... what's the point ? */
