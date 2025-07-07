@@ -3,3 +3,12 @@
 
 ### Jetbrains ###
 .idea/
+
+### Build ###
+.build/
+build/
+_build/
+cmake-build-debug/
+cmake-build-release/
+cmake-build-relwithdebinfo/
+cmake-build-minsize/

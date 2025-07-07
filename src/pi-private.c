@@ -7,10 +7,10 @@
 */
 
 #ifndef __TVPaintSDK_HH
-#include "TVPaintSDK.h"
+#include "TVPaintAnimationSDK/TVPaintSDK.h"
 #endif
 #ifndef __pi_private_HH
-#include "pi-private.h"
+#include "TVPaintAnimationSDK/pi-private.h"
 #endif
 
 #include <stdio.h>

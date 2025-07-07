@@ -1,5 +1,5 @@
-LIBRARY      flip
-DESCRIPTION  'TVPaint plugin flip.DLL'
+LIBRARY      PI_Flip
+DESCRIPTION  'TVPaint plugin PI_Flip.DLL'
 
 EXPORTS
   PI_Msg

@@ -13,11 +13,11 @@
 #include <string.h>
 #include <ctype.h>
 
-#include  "TVPaintSDK.h"
-
-#ifdef WIN32
+#ifdef _WIN64
 #include <malloc.h>
 #endif
+
+#include "TVPaintAnimationSDK/TVPaintSDK.h"
 
 // All functions not exported should be static.
 // All global variables should be static.
@@ -43,6 +43,7 @@ typedef enum
     kFlipY
 } FlipDirection;
 
+
 typedef struct
 {
     FlipDirection  mDirection;
@@ -50,7 +51,7 @@ typedef struct
 
 
 static void
-Flip( const PIBlock* iSrc, PIBlock* oDst, FlipParams iParams )
+Flip( const PIBlock*  iSrc, PIBlock*  oDst, FlipParams  iParams )
 {
     // some sanity checks
     if( !iSrc  ||  !oDst )
@@ -108,21 +109,19 @@ Flip( const PIBlock* iSrc, PIBlock* oDst, FlipParams iParams )
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 
-// TVPaint interface
-
 
 // sizes of some GUI components
 
 // 185 is the standard width of most requesters in TVPaint.
 // you should try to respect it, as this makes life easier for the end user
 // (for stacking several requesters, and so on...).
-#define REQUESTER_W  185
-#define REQUESTER_H  30
+#define  REQUESTER_W  185
+#define  REQUESTER_H  30
 
 
 // ID's of GUI components
-#define ID_FLIPX     10
-#define ID_FLIPY     11
+#define  ID_FLIPX     10
+#define  ID_FLIPY     11
 
 
 
@@ -139,7 +138,7 @@ static struct
 }
 Data =
 {
-    { kFlipX },
+    { 0 },
     0,
     NULL
 };
@@ -152,28 +151,28 @@ Data =
 // numbers (like 10011) are IDs in the localized file.
 // strings are the default values to use when the ID is not found
 // in the localized file (or the localized file doesn't exist).
-#define TXT_NAME        GetLocalString( iFilter, 100,    "SDK Flip" )
+#define TXT_NAME        GetLocalString( iPlugin, 100,    "SDK Flip" )
 
-#define TXT_REQUESTER   GetLocalString( iFilter, 10000,  "Filter : Flip Image" )
+#define TXT_REQUESTER   GetLocalString( iPlugin, 10000,  "Filter : Flip Image" )
 
-#define TXT_FLIPX       GetLocalString( iFilter, 10010,  "FlipX" )
-#define TXT_FLIPY       GetLocalString( iFilter, 10011,  "FlipY" )
+#define TXT_FLIPX       GetLocalString( iPlugin, 10010,  "FlipX" )
+#define TXT_FLIPY       GetLocalString( iPlugin, 10011,  "FlipY" )
 
-#define TXT_HELP_FLIPX  GetLocalString( iFilter, 20010,  "Flips the image in X" )
-#define TXT_HELP_FLIPY  GetLocalString( iFilter, 20011,  "Flips the image in Y" )
+#define TXT_HELP_FLIPX  GetLocalString( iPlugin, 20010,  "Flips the image in X" )
+#define TXT_HELP_FLIPY  GetLocalString( iPlugin, 20011,  "Flips the image in Y" )
 
-#define TXT_ERROR01     GetLocalString( iFilter, 30000,  "Can't Open Requester !" )
+#define TXT_ERROR01     GetLocalString( iPlugin, 30000,  "Can't Open Requester !" )
 
 
-static const char*
-GetLocalString( PIPlugin* iFilter, int iNum, const char* iDefault )
+static char*
+GetLocalString( PIPlugin*  iPlugin, int  iNum, char*  iDefault )
 {
     char*  str;
 
     if( Data.mLocalFile == NULL )
         return  iDefault;
 
-    str = TVGetLocalString( iFilter, Data.mLocalFile, iNum );
+    str = TVGetLocalString( iPlugin, Data.mLocalFile, iNum );
     if( str == NULL  ||  strlen( str ) == 0 )
         return  iDefault;
 
@@ -187,7 +186,7 @@ GetLocalString( PIPlugin* iFilter, int iNum, const char* iDefault )
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 
-// The functions directly called by ATVPaintura through the plugin interface
+// The functions directly called by TVPaint through the plugin interface
 
 
 
@@ -196,40 +195,40 @@ GetLocalString( PIPlugin* iFilter, int iNum, const char* iDefault )
 
 
 void FAR PASCAL
-PI_About( PIPlugin* iFilter )
+PI_About( PIPlugin*  iPlugin )
 {
     char  text[256];
 
-    snprintf( text, sizeof(text), "%s %d,%d", iFilter->PIName, iFilter->PIVersion, iFilter->PIRevision );
+    sprintf( text, "%s %d,%d", iPlugin->PIName, iPlugin->PIVersion, iPlugin->PIRevision );
 
     // Just open a warning popup with the filter name and version.
     // You can open a much nicer requester if you want.
-    TVWarning( iFilter, text );
+    TVWarning( iPlugin, text );
 }
 
 
 /**************************************************************************************/
 // Function called at TVPaint startup, when the filter is loaded.
-// Should do as little as possible to keep Aura's startup time small.
+// Should do as little as possible to keep TVPaint's startup time small.
 
 int FAR PASCAL
-PI_Open( PIPlugin* iFilter )
+PI_Open( PIPlugin*  iPlugin )
 {
     char  tmp[256];
 
     // Load the .loc file.
     // We don't really cares if it fails here, since we do care in GetLocalString()
-    Data.mLocalFile = TVOpenLocalFile( iFilter, "sdk-flip.loc", 0 );
+    Data.mLocalFile = TVOpenLocalFile( iPlugin, "sdk-flip.loc", 0 );
 
-    strcpy( iFilter->PIName, TXT_NAME );
-    iFilter->PIVersion = 1;
-    iFilter->PIRevision = 1;
+    strcpy( iPlugin->PIName, TXT_NAME );
+    iPlugin->PIVersion = 1;
+    iPlugin->PIRevision = 1;
 
-    // If this plugin was the one open at TVPaint shutdown, re-open it
-    TVReadUserString( iFilter, iFilter->PIName, "Open", tmp, "0", 255 );
+    // If this plugin was the one open at Aura shutdown, re-open it
+    TVReadUserString( iPlugin, iPlugin->PIName, "Open", tmp, "0", 255 );
     if( atoi( tmp ) )
     {
-        PI_Parameters( iFilter, NULL ); // NULL as iArg means "open the requester"
+        PI_Parameters( iPlugin, NULL ); // NULL as iArg means "open the requester"
     }
 
     return  1; // OK
@@ -240,16 +239,16 @@ PI_Open( PIPlugin* iFilter )
 // TVPaint shutdown: we make all the necessary cleanup
 
 void FAR PASCAL
-PI_Close( PIPlugin* iFilter )
+PI_Close( PIPlugin*  iPlugin )
 {
     if( Data.mLocalFile )
     {
-        TVCloseLocalFile( iFilter, Data.mLocalFile );
+        TVCloseLocalFile( iPlugin, Data.mLocalFile );
     }
 
     if( Data.mReq )
     {
-        TVCloseReq( iFilter, Data.mReq );
+        TVCloseReq( iPlugin, Data.mReq );
     }
 }
 
@@ -258,9 +257,9 @@ PI_Close( PIPlugin* iFilter )
 // we have something to do !
 
 int FAR PASCAL
-PI_Parameters( PIPlugin* iFilter, const char* iArg )
+PI_Parameters( PIPlugin*  iPlugin, const char*  iArgs )
 {
-    if( iArg )
+    if( iArgs )
     {
         FlipParams  saveParams = Data.mParams;
 
@@ -272,19 +271,19 @@ PI_Parameters( PIPlugin* iFilter, const char* iArg )
         int  i;
 
         // Here we scan all the string of parameters.
-        for( i = 0; iArg[i]; i++ )
+        for( i = 0; iArgs[i]; i++ )
         {
-            switch( tolower( iArg[i] ) )
+            switch( tolower( iArgs[i] ) )
             {
                 case 'x':
                     // found an 'x', do a flip
                     Data.mParams.mDirection = kFlipX;
-                    TVExecute( iFilter );
+                    TVExecute( iPlugin );
                     break;
                 case 'y':
                     // found an 'y', do a flip
                     Data.mParams.mDirection = kFlipY;
-                    TVExecute( iFilter );
+                    TVExecute( iPlugin );
                     break;
 
                 // Just ignore all other characters
@@ -309,10 +308,10 @@ PI_Parameters( PIPlugin* iFilter, const char* iArg )
             // Also we give 'NULL' as the 'Message Function' for this requester,
             // so all his messages will be sent to PI_Msg.
             // This is an acceptable practice when there are just a few buttons.
-            INTPTR  req = TVOpenFilterReqEx( iFilter, REQUESTER_W, REQUESTER_H, NULL, NULL, bPIRequesterFlags_Standard, bPIFilterFlags_NoTopBar );
+            INTPTR  req = TVOpenFilterReqEx( iPlugin, REQUESTER_W, REQUESTER_H, NULL, NULL, bPIRequesterFlags_Standard, bPIFilterFlags_NoTopBar );
             if( req == 0 )
             {
-                TVWarning( iFilter, TXT_ERROR01 );
+                TVWarning( iPlugin, TXT_ERROR01 );
                 return  0;
             }
             Data.mReq = req;
@@ -322,29 +321,29 @@ PI_Parameters( PIPlugin* iFilter, const char* iArg )
             // Not recommended for more complex requesters. (see the other examples)
 
             // Sets the title of the requester.
-            TVSetReqTitle( iFilter, Data.mReq, TXT_REQUESTER );
+            TVSetReqTitle( iPlugin, Data.mReq, TXT_REQUESTER );
 
             // Creates a button in the requester (0 as height means use standard value).
             // The ID of the button is ID_FLIPX.
-            // The type of the button is PIRBF_BUTTON_NORMAL.
+            // The type of the button is bPIButtonFlags_Normal.
             // The string "Flip X" is written in the middle of the button.
-            TVAddButtonReq( iFilter, Data.mReq, 9, y, REQUESTER_W-19, 0, ID_FLIPX, bPIButtonFlags_Normal|bPIButtonFlags_Action, TXT_FLIPX );
+            TVAddButtonReq( iPlugin, Data.mReq, 9, y, REQUESTER_W-19, 0, ID_FLIPX, bPIButtonFlags_Normal|bPIButtonFlags_Action, TXT_FLIPX );
 
             // Put a help messages on it.
-            TVSetButtonInfoText( iFilter, Data.mReq, ID_FLIPX, TXT_HELP_FLIPX );                                                     // Help Popup
+            TVSetButtonInfoText( iPlugin, Data.mReq, ID_FLIPX, TXT_HELP_FLIPX );                                                     // Help Popup
 
             // On to the next button !
             y += 20;
 
             // And another button.
-            TVAddButtonReq( iFilter, Data.mReq, 9, y, REQUESTER_W-19, 0, ID_FLIPY, bPIButtonFlags_Normal|bPIButtonFlags_Action, TXT_FLIPY );
-            TVSetButtonInfoText( iFilter, Data.mReq, ID_FLIPY, TXT_HELP_FLIPY );                                                     // Help Popup
+            TVAddButtonReq( iPlugin, Data.mReq, 9, y, REQUESTER_W-19, 0, ID_FLIPY, bPIButtonFlags_Normal|bPIButtonFlags_Action, TXT_FLIPY );
+            TVSetButtonInfoText( iPlugin, Data.mReq, ID_FLIPY, TXT_HELP_FLIPY );                                                     // Help Popup
             y += 20;
         }
         else
         {
             // If it is already open, we just put it on front of all other requesters.
-            TVReqToFront( iFilter, Data.mReq );
+            TVReqToFront( iPlugin, Data.mReq );
         }
     }
 
@@ -356,37 +355,37 @@ PI_Parameters( PIPlugin* iFilter, const char* iArg )
 // something happenned that needs our attention.
 
 int FAR PASCAL
-PI_Msg( PIPlugin* iFilter, INTPTR iEvent, INTPTR iReq, INTPTR* iArgs )
+PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPTR*  iArgs )
 {
     // what did happen ?
     switch( iEvent )
     {
         // The user just 'clicked' on a normal button
-        case kPIEvents_ButtonUp:
+        case  kPIEvents_ButtonUp:
         {
             switch( iArgs[0] )   // iArgs[0] is the ID of the selected button
             {
-                case ID_FLIPX:   // "Flip X" button selected
+                case  ID_FLIPX:   // "Flip X" button selected
                     // Update the data with the new parameter(s)
                     // Here we just set the direction of the flip
                     Data.mParams.mDirection = kFlipX;
 
-                    // This call tells TVPaint to call the following functions in our plugin :
+                    // This call tells Aura to call the following functions in our plugin :
                     // PI_SequenceStart, PI_Start, PI_Work, PI_Finish and PI_SequenceFinish
                     // in the right order.
-                    TVExecute( iFilter );
+                    TVExecute( iPlugin );
                     break;
 
-                case ID_FLIPY:   // "Flip Y" button selected
+                case  ID_FLIPY:   // "Flip Y" button selected
                     Data.mParams.mDirection = kFlipY;
-                    TVExecute( iFilter );
+                    TVExecute( iPlugin );
                     break;
             }
         }
         break;
 
         // The requester was just closed.
-        case kPIEvents_WindowClose:
+        case  kPIEvents_WindowClose:
         {
             char  tmp[256];
 
@@ -397,12 +396,12 @@ PI_Msg( PIPlugin* iFilter, INTPTR iEvent, INTPTR iReq, INTPTR* iArgs )
             // iArgs[4] contains a flag which tells us if the requester
             // has been closed by the user (flag=0) or by Aura's shutdown (flag=1).
             // If it was by Aura's shutdown, that means this requester was the
-            // last one open, so we should reopen this one the next time TVPaint
+            // last one open, so we should reopen this one the next time Aura
             // is started.  Else we won't open it next time.
-            snprintf( tmp, sizeof(tmp), "%d", (int)(iArgs[4]) );
+            sprintf( tmp, "%d", (int)(iArgs[4]) );
 
             // Save it in Aura's init file.
-            TVWriteUserString( iFilter, iFilter->PIName, "Open", tmp );
+            TVWriteUserString( iPlugin, iPlugin->PIName, "Open", tmp );
         }
         break;
     }
@@ -419,7 +418,7 @@ PI_Msg( PIPlugin* iFilter, INTPTR iEvent, INTPTR iReq, INTPTR* iArgs )
 
 
 int FAR PASCAL
-PI_SequenceStart( PIPlugin* iFilter, int iNumImages )
+PI_SequenceStart( PIPlugin*  iPlugin, int  iNumImages )
 {
     // In this simple example we don't have anything to allocate/precompute.
 
@@ -431,7 +430,7 @@ PI_SequenceStart( PIPlugin* iFilter, int iNumImages )
 // Here you should cleanup what you've done in PI_SequenceStart
 
 void FAR PASCAL
-PI_SequenceFinish( PIPlugin* iFilter )
+PI_SequenceFinish( PIPlugin*  iPlugin )
 {
     // nothing special to cleanup
 }
@@ -442,7 +441,7 @@ PI_SequenceFinish( PIPlugin* iFilter )
 // Here you should allocate memory and precompute all the stuff you can.
 
 int FAR PASCAL
-PI_Start( PIPlugin* iFilter, double iPos, double iSize )
+PI_Start( PIPlugin*  iPlugin, double  iPos, double  iSize )
 {
     // In this simple example we don't have anything to allocate/precompute.
 
@@ -452,7 +451,7 @@ PI_Start( PIPlugin* iFilter, double iPos, double iSize )
 
 
 void FAR PASCAL
-PI_Finish( PIPlugin* iFilter )
+PI_Finish( PIPlugin*  iPlugin )
 {
     // nothing special to cleanup
 }
@@ -461,19 +460,19 @@ PI_Finish( PIPlugin* iFilter )
 /**************************************************************************************/
 // 'Execution' of the filter.
 // This is the only function in which you have the right to change
-// the iFilter->Current image.
+// the iPlugin->Current image.
 // In all other functions you just have the right to read it.
 
 int FAR PASCAL
-PI_Work( PIPlugin* iFilter )
+PI_Work( PIPlugin*  iPlugin )
 {
-    Flip( iFilter->Undo, iFilter->Current, Data.mParams );
+    Flip( iPlugin->Undo, iPlugin->Current, Data.mParams );
 
     // Update the display.
     // In case of very slow filters, you should update the part of
     // the display that has already been computed from time to time.
     // Here we just update the whole display at once at the end.
-    TVUpdateDisplay( iFilter, iFilter->WorkArea_x1, iFilter->WorkArea_y1, iFilter->WorkArea_x2, iFilter->WorkArea_y2 );
+    TVUpdateDisplay( iPlugin, iPlugin->WorkArea_x1, iPlugin->WorkArea_y1, iPlugin->WorkArea_x2, iPlugin->WorkArea_y2 );
 
     // 1 means 'continue', 0 means 'error, abort' (like 'not enough memory')
     return  1;
