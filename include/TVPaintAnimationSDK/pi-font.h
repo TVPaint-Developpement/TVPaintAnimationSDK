@@ -11,6 +11,7 @@
 
 #include "pi-basics.h"
 
+#include <wchar.h>
 #include <string.h>
 
 

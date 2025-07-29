@@ -1,0 +1,43 @@
+name: macOS Build
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: [ self-hosted, macOS ]
+    steps:
+      - name: Clean workspace
+        run: rm -rf ${{ github.workspace }}/*
+
+      - name: Getting the name of the branch to compile
+        id: get_branch_name
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "branch_name=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+          else
+            echo "branch_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout TVPaintAnimationSDK
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.get_branch_name.outputs.branch_name }}
+          path: TVPaintAnimationSDK
+
+      - name: Configure CMake
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DTVPASDK_BUILD_EXAMPLE=ON
+
+      - name: Build SDK
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target TVPaintAnimationSDK
+
+      - name: Build Flip Example
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target PI_Flip
