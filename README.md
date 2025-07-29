@@ -1,3 +1,9 @@
+| Platform | Build Status                                                                                                                                                                                                                                  |
+|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| macOS    | [![macOS build status](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/macos-build.yml/badge.svg?branch=main)](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/macos-build.yml) |
+| Linux    |                                                                                                                                                                                                                                               |
+| Windows  |                                                                                                                                                                                                                                               |
+
 # TVPaint Animation SDK
 
 This SDK provides the necessary tools and libraries to develop plugins for TVPaint Animation software. 
