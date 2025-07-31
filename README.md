@@ -27,8 +27,8 @@ Follow these steps to build and install the SDK:
 
 4. To compile the examples, include the `TVPASDK_BUILD_EXAMPLE` option: `cmake .. -DTVPASDK_BUILD_EXAMPLE=ON -G Ninja`
 5. To compile the SDK (and examples if enabled), run: `ninja`
-6. To install the SDK, run: `ninja install`
-7. To uninstall the SDK, run: `ninja uninstall`
+6. To install the SDK, run: `ninja install` (⚠️ If you install the SDK in a folder requiring administrator rights, such as `/usr/local` or `/opt`, you need to type `sudo ninja install`)
+7. To uninstall the SDK, run: `ninja uninstall` (⚠️ If you uninstall the SDK located in a folder requiring administrator rights, such as `/usr/local` or `/opt`, you need to type `sudo ninja uninstall`)
 
 ## Examples
 
