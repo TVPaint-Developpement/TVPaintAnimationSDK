@@ -1,0 +1,12 @@
+NAME        DemoSDK.dll
+DESCRIPTION 'SDK Plugin Demo'
+
+EXPORTS
+    PI_Open
+    PI_Msg
+    PI_About
+    PI_Parameters
+    PI_Start
+    PI_Work
+    PI_Finish
+    PI_Close
