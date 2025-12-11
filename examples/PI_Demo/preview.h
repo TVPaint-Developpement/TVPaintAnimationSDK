@@ -11,7 +11,7 @@
 
 
 #ifndef __TVPaintSDK_HH
-#include "TVPaintSDK.h"
+#include "TVPaintAnimationSDK/TVPaintSDK.h"
 #endif
 
 

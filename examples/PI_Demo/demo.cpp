@@ -9,10 +9,9 @@
 
 #include  "demo.h"
 
-#include  "TVPaintSDK.h"
+#include  "TVPaintAnimationSDK/TVPaintSDK.h"
 
 #include "utilities.h"
-#include "windows.h"
 
 
 extern  nSDK::cTV2Tab*  NewTabButton( cDemoWindow*  iWindow );

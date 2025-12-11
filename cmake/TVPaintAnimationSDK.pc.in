@@ -3,7 +3,7 @@ libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
 includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
 
 Name: TVPaint Animation SDK
-Description: SDK header-only for TVPaintAnimation
+Description: C SDK for TVPaint Animation plugin development
 Version: @PROJECT_VERSION@
 Cflags: -I${includedir}
 Libs: -L${libdir} -lTVPaintAnimationSDK

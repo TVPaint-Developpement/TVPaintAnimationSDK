@@ -7,17 +7,16 @@
 */
 
 
-#include "SDK-CPP.h"
+#include "TVPaintAnimationSDK/TVPaintSDK.hpp"
 
 
-#include "TVPaintSDK.h"
+#include "TVPaintAnimationSDK/TVPaintSDK.h"
 
 
 #include "demo.h"
 
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdio>
 
 
 //MARK: ========================================================================================================= Misc Tab

@@ -5,8 +5,10 @@
  *  @brief  The demo plugin.
  */
 
+#pragma once
 
-#include "SDK-CPP.h"
+
+#include "TVPaintAnimationSDK/TVPaintSDK.hpp"
 
 
 using  namespace  std::literals::string_literals;

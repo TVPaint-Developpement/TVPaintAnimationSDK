@@ -7,16 +7,14 @@
 */
 
 
-#include "SDK-CPP.h"
+#include "TVPaintAnimationSDK/TVPaintSDK.hpp"
 
 
-#include "TVPaintSDK.h"
+#include "TVPaintAnimationSDK/TVPaintSDK.h"
 
 
 #include "demo.h"
 
-
-#include <stdlib.h>
 
 
 //MARK: ========================================================================================================= Text Tab
