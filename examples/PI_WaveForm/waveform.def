@@ -1,0 +1,13 @@
+LIBRARY     Waveform
+DESCRIPTION  'TVPaint Plugin Waveform'
+EXPORTS
+  PI_Msg
+  PI_Open
+  PI_About
+  PI_Parameters
+  PI_SequenceStart
+  PI_Start
+  PI_Work
+  PI_Finish
+  PI_SequenceFinish
+  PI_Close

@@ -80,4 +80,5 @@ add_custom_target( uninstall
 
 if( TVPASDK_BUILD_EXAMPLE )
     add_subdirectory( examples/PI_Flip )
+    add_subdirectory( examples/PI_WaveForm )
 endif()

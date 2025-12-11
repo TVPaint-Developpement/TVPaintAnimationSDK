@@ -184,7 +184,7 @@ INTPTR  TVOpenReqEx( PIPlugin*  iPlugin, int  iWidth, int  iHeight, int  iX, int
     @param[in]  iKeys          The set of keyframes.
     @param[in]  iReqFlags      The properties of the window, @see ePIRequesterFlags.
     @param[in]  iMenuFlags     The properties of the bar at the top of the window, @see ePIFilterFlags.
- 
+
     @return  The ID of the window.
 
     @see  TVCloseReq().
@@ -392,7 +392,7 @@ int  TVAddButtonReq( PIPlugin*  iPlugin, INTPTR  iReq, int  iX, int  iY, int  iW
     @param[in]  iID      The unique (per window) ID of the button.
 
     @return  An error code: 0 = An error occured, 1 = Everything went well.
- 
+
     @bug  Some refresh problems with check or minislider buttons.
 
     @see  TVAddButtonReq()
@@ -421,7 +421,7 @@ int  TVChangeButtonReq( PIPlugin*  iPlugin, INTPTR  iReq, int  iID, INTPTR  iFla
 
 
 /** @brief  Sets/changes the button help text.
-    The help text id displayed in a help 'bubble' when the mouse is hovered above the button.
+    The help text is displayed in a help 'bubble' when the mouse is hovered above the button.
 
     @param[in]  iPlugin    This plugin's reference.
     @param[in]  iReq       The ID of the window.
@@ -459,7 +459,7 @@ int  TVChangeButtonFlags( PIPlugin*  iPlugin, INTPTR  iReq, int  iID, INTPTR  iF
     @param[in]  iFlags   The new flags. @see ePIButtonTextAlign.
 
     @return  An error code: 0 = An error occured, 1 = Everything went well.
- 
+
     @bug  Doesn’t work correctly with the button flag bPIButtonFlags_Popup.
 
     @ingroup  sdk_PIRequester
@@ -939,7 +939,7 @@ enum  ePIMetaFlags
 /** @brief  Installs a metafunction.
 
     @todo //BLAH: how does this work ? => explain what msgs will be sent...
- 
+
     For iFunction, you MUST use one of the kPIMeta_* enumerator, and you CAN 'OR' some of the bPIMeta_* enumerators to it to alter its function.
 
     @param[in]  iPlugin    This plugin's reference.
