@@ -41,3 +41,8 @@ jobs:
         working-directory: TVPaintAnimationSDK
         run: |
           cmake --build build --config Release --target PI_Flip
+
+      - name: Build WaveForm Example
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target PI_WaveForm
