@@ -88,9 +88,7 @@ typedef  struct  PIFileRequester
         0 = show, 1 = don't show !!  @todo //CHECK: !!
      */
     int  Icon;
-#ifdef _WIN64
-    FARPROC  Info;
-#else
+
     /** @brief  You can set this pointer to a function to generate the file info and thumbnail.
         You have to provide your own function only if you want to show icons for some 'proprietary' information,
         else the one provided by default by TVAllocFileReq() is just fine.
@@ -103,7 +101,6 @@ typedef  struct  PIFileRequester
         @return  An error code: 0 = An error occured, 1 = Everything went well.
      */
     int  (*Info)( PIPlugin*  iPlugin, int  iFull, char*  iName, PIFileInfo*  oFileInfo );
-#endif
 
     /** @brief  Reserved data, fill with 0 then forget about it... */
     PIUInt64  Reserved[16];

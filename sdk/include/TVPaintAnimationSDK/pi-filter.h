@@ -96,18 +96,15 @@ typedef  struct  PIPlugin
      */
     int  UserParametersSize;
 
-#ifdef _WIN64
-    FARPROC  CallBack;
-    INTPTR  TVWindow; // Windows HWND
-#else
     /** @brief  Private field for the host. Never ever call this directly ! */
     INTPTR  (*CallBack)( struct PIPlugin*, INTPTR, INTPTR* );
 
     /** @brief  Contains the OS specific pointer to the window.
+        On Windows: HWND (cast to INTPTR)
+        On other platforms: void* pointer
         @todo //CHECK: Does this still make sense in multi-window mode ?
      */
-    void*  TVWindow;
-#endif
+    INTPTR  TVWindow;
 
     /** @brief  Screen width in pixels.
         This doesn't make sense anymore in multi-window mode.

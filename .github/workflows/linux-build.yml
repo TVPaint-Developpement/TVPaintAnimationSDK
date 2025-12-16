@@ -1,4 +1,4 @@
-name: macOS Build
+name: Linux Build
 on:
   push:
     branches:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Getting the name of the branch to compile
         id: get_branch_name
@@ -24,9 +24,10 @@ jobs:
           ref: ${{ steps.get_branch_name.outputs.branch_name }}
           path: TVPaintAnimationSDK
 
-#      - name: Install macOS dependencies
-#        shell: bash
-#        run: brew install ninja cmake
+#      - name: Install Linux dependencies
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y ninja-build cmake
 
       - name: Configure CMake
         working-directory: TVPaintAnimationSDK

@@ -3,5 +3,6 @@
 include(CMakeFindDependencyMacro)
 
 include("${CMAKE_CURRENT_LIST_DIR}/TVPaintAnimationSDKTargets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/TVPaintAnimationSDKUtilities.cmake")
 
 check_required_components(TVPaintAnimationSDK)

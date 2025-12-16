@@ -72,11 +72,12 @@ typedef  unsigned long long  INTPTR;
 
 #define  strnicmp  strncasecmp  ///< Windows junk.
 
+#endif
+
+// Obsolete Windows calling conventions - define as empty for modern code
 #define  FAR     ///< Windows junk.
 #define  PASCAL  ///< Windows junk.
 #define  WINAPI  ///< Windows junk.
-
-#endif
 
 
 #ifdef __cplusplus

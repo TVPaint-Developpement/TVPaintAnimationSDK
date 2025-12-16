@@ -1,4 +1,4 @@
-name: macOS Build
+name: Windows Build
 on:
   push:
     branches:
@@ -7,10 +7,11 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: windows-latest
     steps:
       - name: Getting the name of the branch to compile
         id: get_branch_name
+        shell: bash
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             echo "branch_name=${{ github.head_ref }}" >> $GITHUB_OUTPUT
@@ -24,9 +25,13 @@ jobs:
           ref: ${{ steps.get_branch_name.outputs.branch_name }}
           path: TVPaintAnimationSDK
 
-#      - name: Install macOS dependencies
-#        shell: bash
-#        run: brew install ninja cmake
+      - name: Install Windows dependencies
+        shell: pwsh
+        run: |
+          winget install --id Ninja-build.Ninja --silent --accept-source-agreements --accept-package-agreements
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Configure CMake
         working-directory: TVPaintAnimationSDK
@@ -52,11 +57,6 @@ jobs:
         working-directory: TVPaintAnimationSDK
         run: |
           cmake --build build --config Release --target TVPaintAnimationSDK-CPP
-
-      - name: Build Fade Example
-        working-directory: TVPaintAnimationSDK
-        run: |
-          cmake --build build --config Release --target PI_Fade
 
       - name: Build Demo Example
         working-directory: TVPaintAnimationSDK

@@ -12,11 +12,17 @@ add_library( TVPaintAnimationSDK-CPP STATIC ${SDK_CPP_SOURCES} )
 add_library( TVPaintAnimationSDK::TVPaintAnimationSDK-CPP ALIAS TVPaintAnimationSDK-CPP )
 
 set_target_properties( TVPaintAnimationSDK-CPP PROPERTIES
-      CXX_STANDARD 20
-      CXX_STANDARD_REQUIRED ON
-      CXX_EXTENSIONS OFF
-      POSITION_INDEPENDENT_CODE ON
-  )
+                       CXX_STANDARD 20
+                       CXX_STANDARD_REQUIRED ON
+                       CXX_EXTENSIONS OFF
+                       POSITION_INDEPENDENT_CODE ON
+                       )
+
+# Prevent Windows from defining min/max macros that conflict with std::min/std::max
+if( WIN32 )
+    target_compile_definitions( TVPaintAnimationSDK-CPP PUBLIC NOMINMAX )
+endif()
+
 target_include_directories( TVPaintAnimationSDK-CPP PUBLIC
                             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
                             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>

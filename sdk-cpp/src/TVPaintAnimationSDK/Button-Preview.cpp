@@ -13,6 +13,8 @@
 #include "TVPaintAnimationSDK/Plugin.hpp"
 #include "TVPaintAnimationSDK/Window.hpp"
 
+#include <algorithm>
+
 #include <cstring>
 
 using  namespace  std::literals::string_literals;
