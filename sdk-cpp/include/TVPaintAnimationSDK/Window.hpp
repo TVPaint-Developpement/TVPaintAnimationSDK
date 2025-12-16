@@ -15,6 +15,7 @@
 #include "TVPaintAnimationSDK/PixelCoordinates.hpp"
 
 
+#include <functional>
 #include <map>
 #include <string>
 

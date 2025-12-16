@@ -15,6 +15,7 @@
 
 #include "demo.h"
 
+#include <cstring>
 
 using  namespace  std::literals::string_literals;
 

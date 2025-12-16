@@ -6,6 +6,12 @@ include( GNUInstallDirs )
 add_library( TVPaintAnimationSDK STATIC src/TVPaintAnimationSDK/pi-private.c )
 add_library( TVPaintAnimationSDK::TVPaintAnimationSDK ALIAS TVPaintAnimationSDK )
 
+set_target_properties( TVPaintAnimationSDK PROPERTIES
+      C_STANDARD 11
+      C_STANDARD_REQUIRED ON
+      C_EXTENSIONS OFF
+      POSITION_INDEPENDENT_CODE ON
+  )
 target_include_directories( TVPaintAnimationSDK PUBLIC
                             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
                             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>

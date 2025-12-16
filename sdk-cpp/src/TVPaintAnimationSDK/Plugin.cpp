@@ -13,6 +13,7 @@
 #include "TVPaintAnimationSDK/Keys.hpp"
 #include "TVPaintAnimationSDK/Window.hpp"
 
+#include <cstring>
 
 namespace  nSDK {
 

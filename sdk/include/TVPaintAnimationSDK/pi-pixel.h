@@ -69,7 +69,7 @@ enum
     kOffset_Blue  = 3,
 };
 #endif
-#ifdef LINUX
+#ifdef __linux__
 enum
 {
     kOffset_Alpha = 0,
@@ -122,7 +122,7 @@ typedef  union  PIPixel
         PIUInt8  Blue;   ///< The blue channel.
     };
 #endif
-#ifdef LINUX
+#ifdef __linux__
     struct
     {
         PIUInt8  Alpha;

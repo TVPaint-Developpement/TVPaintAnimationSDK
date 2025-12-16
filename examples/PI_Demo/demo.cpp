@@ -13,6 +13,7 @@
 
 #include "utilities.h"
 
+#include <cstring>
 
 extern  nSDK::cTV2Tab*  NewTabButton( cDemoWindow*  iWindow );
 extern  nSDK::cTV2Tab*  NewTabText( cDemoWindow*  iWindow );

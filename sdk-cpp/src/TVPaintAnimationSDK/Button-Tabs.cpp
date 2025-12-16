@@ -15,6 +15,7 @@
 
 
 #include <cstdlib>
+#include <cstring>
 
 
 using  namespace  std::literals::string_literals;

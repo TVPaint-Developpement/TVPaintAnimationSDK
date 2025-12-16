@@ -11,7 +11,12 @@ file( GLOB SDK_CPP_SOURCES LIST_DIRECTORIES FALSE CONFIGURE_DEPENDS ${SDK_CPP_SO
 add_library( TVPaintAnimationSDK-CPP STATIC ${SDK_CPP_SOURCES} )
 add_library( TVPaintAnimationSDK::TVPaintAnimationSDK-CPP ALIAS TVPaintAnimationSDK-CPP )
 
-target_compile_features( TVPaintAnimationSDK-CPP PUBLIC cxx_std_20 )
+set_target_properties( TVPaintAnimationSDK-CPP PROPERTIES
+      CXX_STANDARD 20
+      CXX_STANDARD_REQUIRED ON
+      CXX_EXTENSIONS OFF
+      POSITION_INDEPENDENT_CODE ON
+  )
 target_include_directories( TVPaintAnimationSDK-CPP PUBLIC
                             $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
                             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
