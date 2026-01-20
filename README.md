@@ -82,8 +82,7 @@ cmake .. -DTVPASDK_BUILD_CPP_SDK=OFF -G Ninja
 cmake .. -DTVPASDK_BUILD_EXAMPLE=ON -G Ninja
 
 # Build and install to custom location
-cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/tvpaint-sdk -G Ninja
-ninja
+cmake .. -DCMAKE_INSTALL_PREFIX=/path/to/a/custom/location/tvpaint-sdk -G Ninja
 ninja install
 ```
 
@@ -366,10 +365,6 @@ The generated documentation includes:
 
 See the LICENSE file for details.
 
-## Contributing
-
-Contributions are welcome! Please submit issues and pull requests on the GitHub repository.
-
 ## Support
 
-For questions and support, please visit the TVPaint forums or contact TVPaint Development team
+For questions and support, please visit the [TVPaint forums](https://forum.tvpaint.com) or contact [TVPaint Development Support](https://tvpaint.odoo.com/contactus-1)
