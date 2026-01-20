@@ -1,0 +1,65 @@
+name: Linux Build
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Getting the name of the branch to compile
+        id: get_branch_name
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "branch_name=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+          else
+            echo "branch_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout TVPaintAnimationSDK
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.get_branch_name.outputs.branch_name }}
+          path: TVPaintAnimationSDK
+
+#      - name: Install Linux dependencies
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y ninja-build cmake
+
+      - name: Configure CMake
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DTVPASDK_BUILD_EXAMPLE=ON
+
+      - name: Build SDK
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target TVPaintAnimationSDK
+
+      - name: Build Flip Example
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target PI_Flip
+
+      - name: Build WaveForm Example
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target PI_WaveForm
+
+      - name: Build SDK CPP Wrapper
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target TVPaintAnimationSDK-CPP
+
+      - name: Build Fade Example
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target PI_Fade
+
+      - name: Build Demo Example
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target PI_Demo

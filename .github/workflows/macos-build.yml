@@ -7,11 +7,8 @@ on:
 
 jobs:
   build:
-    runs-on: [ self-hosted, macOS ]
+    runs-on: macos-latest
     steps:
-      - name: Clean workspace
-        run: rm -rf ${{ github.workspace }}/*
-
       - name: Getting the name of the branch to compile
         id: get_branch_name
         run: |
@@ -26,6 +23,10 @@ jobs:
         with:
           ref: ${{ steps.get_branch_name.outputs.branch_name }}
           path: TVPaintAnimationSDK
+
+#      - name: Install macOS dependencies
+#        shell: bash
+#        run: brew install ninja cmake
 
       - name: Configure CMake
         working-directory: TVPaintAnimationSDK
@@ -46,3 +47,18 @@ jobs:
         working-directory: TVPaintAnimationSDK
         run: |
           cmake --build build --config Release --target PI_WaveForm
+
+      - name: Build SDK CPP Wrapper
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target TVPaintAnimationSDK-CPP
+
+      - name: Build Fade Example
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target PI_Fade
+
+      - name: Build Demo Example
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target PI_Demo

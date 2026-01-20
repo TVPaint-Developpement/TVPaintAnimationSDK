@@ -9,7 +9,7 @@
 #pragma  once
 
 
-#include "TVPaintSDK.h"
+#include "TVPaintAnimationSDK/TVPaintSDK.h"
 
 
 #include <string>

@@ -1,0 +1,64 @@
+name: Windows Build
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Getting the name of the branch to compile
+        id: get_branch_name
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "branch_name=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+          else
+            echo "branch_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout TVPaintAnimationSDK
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.get_branch_name.outputs.branch_name }}
+          path: TVPaintAnimationSDK
+
+      - name: Install Windows dependencies
+        shell: pwsh
+        run: |
+          winget install --id Ninja-build.Ninja --silent --accept-source-agreements --accept-package-agreements
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Configure CMake
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DTVPASDK_BUILD_EXAMPLE=ON
+
+      - name: Build SDK
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target TVPaintAnimationSDK
+
+      - name: Build Flip Example
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target PI_Flip
+
+      - name: Build WaveForm Example
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target PI_WaveForm
+
+      - name: Build SDK CPP Wrapper
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target TVPaintAnimationSDK-CPP
+
+      - name: Build Demo Example
+        working-directory: TVPaintAnimationSDK
+        run: |
+          cmake --build build --config Release --target PI_Demo

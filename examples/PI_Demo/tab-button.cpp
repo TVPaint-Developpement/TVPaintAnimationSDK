@@ -7,16 +7,13 @@
 */
 
 
-#include "SDK-CPP.h"
+#include "TVPaintAnimationSDK/TVPaintSDK.hpp"
 
 
-#include "TVPaintSDK.h"
+#include "TVPaintAnimationSDK/TVPaintSDK.h"
 
 
 #include "demo.h"
-
-
-#include <stdlib.h>
 
 
 //MARK: ======================================================================================================== Button Tab
@@ -129,9 +126,9 @@ cTabButton::Show( nSDK::cTV2Window*  iWindow, const nSDK::cPixelRectangle&  iAre
 
     x = 220;
     y = starty + 25;
-    mGUIImmediate   = new  nSDK::cTV2ButtonCheckBox( mWindow, id++, {x, y, 0, 0, nSDKC::cPixelRectangle::eXYWH::kXYWH}, "*_Immediate"s,  &mImmediate,  [this](int,bool){ MakeButton(); } ); y += 20;
-    mGUIRepeat      = new  nSDK::cTV2ButtonCheckBox( mWindow, id++, {x, y, 0, 0, nSDKC::cPixelRectangle::eXYWH::kXYWH}, "*_Repeat"s,     &mRepeat,     [this](int,bool){ MakeButton(); } ); y += 20;
-    mGUIRight       = new  nSDK::cTV2ButtonCheckBox( mWindow, id++, {x, y, 0, 0, nSDKC::cPixelRectangle::eXYWH::kXYWH}, "*_Right"s,      &mRight,      [this](int,bool){ MakeButton(); } ); y += 20;
+    mGUIImmediate   = new  nSDK::cTV2ButtonCheckBox( mWindow, id++, {x, y, 0, 0, nSDK::cPixelRectangle::eXYWH::kXYWH}, "*_Immediate"s,  &mImmediate,  [this](int,bool){ MakeButton(); } ); y += 20;
+    mGUIRepeat      = new  nSDK::cTV2ButtonCheckBox( mWindow, id++, {x, y, 0, 0, nSDK::cPixelRectangle::eXYWH::kXYWH}, "*_Repeat"s,     &mRepeat,     [this](int,bool){ MakeButton(); } ); y += 20;
+    mGUIRight       = new  nSDK::cTV2ButtonCheckBox( mWindow, id++, {x, y, 0, 0, nSDK::cPixelRectangle::eXYWH::kXYWH}, "*_Right"s,      &mRight,      [this](int,bool){ MakeButton(); } ); y += 20;
     y += 20;
 
     mGUIFlat        = new  nSDK::cTV2ButtonCheckBox( mWindow, id++, {x, y, 0, 0, nSDK::cPixelRectangle::eXYWH::kXYWH}, "*_Flat"s,       &mFlat,       [this](int,bool){ MakeButton(); } ); y += 20;

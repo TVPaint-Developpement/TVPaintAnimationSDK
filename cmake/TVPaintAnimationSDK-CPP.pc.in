@@ -1,0 +1,10 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+
+Name: TVPaint Animation SDK C++
+Description: C++ SDK wrapper for TVPaint Animation plugin development
+Version: @PROJECT_VERSION@
+Requires: TVPaintAnimationSDK
+Cflags: -I${includedir}
+Libs: -L${libdir} -lTVPaintAnimationSDK-CPP

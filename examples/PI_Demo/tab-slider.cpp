@@ -7,16 +7,10 @@
 */
 
 
-#include "SDK-CPP.h"
-
-
-#include "TVPaintSDK.h"
+#include "TVPaintAnimationSDK/TVPaintSDK.hpp"
 
 
 #include "demo.h"
-
-
-#include <stdlib.h>
 
 
 //MARK: ======================================================================================================== Slider Tab
