@@ -1,0 +1,11 @@
+
+#--- PI_Flip
+
+
+$100   "SDK Inverser"
+$10000 "Filtre : Inverse Image"
+$10010 "Inverse X"
+$10011 "Inverse Y"
+$20010 "Inverse Image sur X"
+$20011 "Inverse Image sur Y"
+$30000 "Impossible d'ouvrir la fenêtre !"
