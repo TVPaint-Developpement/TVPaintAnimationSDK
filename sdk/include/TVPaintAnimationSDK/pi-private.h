@@ -43,7 +43,7 @@ enum  eTVCallbacks
     CB_READREQDATA                = (CB_RESERVED+103),
     CB_WRITEREQDATA               = (CB_RESERVED+104),
     CB_OPENREQEX                  = (CB_RESERVED+105),
-    CB_OPENFILTERREQ              = (CB_RESERVED+106), 
+    CB_OPENFILTERREQ              = (CB_RESERVED+106),
 
     CB_OPENMETA                   = (CB_RESERVED+200),
     CB_CLOSEMETA                  = (CB_RESERVED+201),
@@ -97,6 +97,7 @@ enum  eTVCallbacks
     CB_LOCAL_OPEN                 = (CB_RESERVED+1100),
     CB_LOCAL_CLOSE                = (CB_RESERVED+1101),
     CB_LOCAL_GET_STRING           = (CB_RESERVED+1102),
+    CB_LOCAL_GET_ICON             = (CB_RESERVED+1103),
 
     CB_TEXT_TO_BLOCK              = (CB_RESERVED+1200),
 

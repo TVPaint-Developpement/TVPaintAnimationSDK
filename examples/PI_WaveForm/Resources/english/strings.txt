@@ -1,0 +1,53 @@
+﻿
+$100   "SDK Waveform"
+$10000 "SDK Waveform"
+
+$10010 "Composite WF"
+$10011 "VectorScope"
+$10012 "Component WF"
+
+$10015 "Luminosity"
+
+$10020 "Display"
+$10025 "YC"
+$10026 "Y"
+$10027 "C"
+
+$10030 "Scale"
+$10035 "100%"
+$10036 "75%"
+
+$10040 "Component"
+$10045 "RGB"
+$10046 "YUV"
+
+$10050 "Y"
+$10051 "U"
+$10052 "V"
+$10053 "R"
+$10054 "G"
+$10055 "B"
+$10056 "Yl"
+$10057 "Cy"
+$10058 "Mg"
+$10059 "I"
+$10060 "Q"
+$10061 "-I"
+$10062 "-Q"
+
+$10065 "Apply"
+$10066 "Reticle"
+$10067 "Transparent"
+
+$10070 "Can't open requester !"
+
+$10110 "Choose your type of Waveform monitor"
+$10115 "Choose the luminosity"
+$10120 "Choose the channel to display"
+$10130 "Choose the scale to display"
+$10140 "Choose the channels to display"
+$10150 "This is your Waveform monitor !"
+$10160 "Display Waveform reticle"
+$10161 "Apply Waveform with a transparent background"
+$10162 "Apply Filter"
+

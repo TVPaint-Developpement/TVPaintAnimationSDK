@@ -95,7 +95,7 @@ TVReadImage( PIFilter*  iPlugin, const char*  iFileName, PIPixel*  oDst, int  iD
 int
 TVBlockBlur( PIFilter*  iPlugin, PIBlock*  ioBlock, double  iBlurX, double  iBlurY, int  iMirrorBorder )
 {
-    INTPTR  arg[] = { PIBCMD_BLUR, (INTPTR)ioBlock, iBlurX*65536., iBlurY*65536., iMirrorBorder, 0,0,0,0 }; 
+    INTPTR  arg[] = { PIBCMD_BLUR, (INTPTR)ioBlock, iBlurX*65536., iBlurY*65536., iMirrorBorder, 0,0,0,0 };
 
     return  (int)iPlugin->CallBack( iPlugin, CB_BLOCK_CMD, arg );
 }
@@ -210,7 +210,7 @@ int
 TVOpenFileReq( PIFilter*  iPlugin, PIFileRequester*  iFileReq )
 {
     INTPTR  arg[] = { (INTPTR)iFileReq, 0,0,0,0 };
-    
+
     return  (int)iPlugin->CallBack( iPlugin, CB_OPEN_FILEREQ, arg );
 }
 
@@ -544,7 +544,7 @@ TVYUVToRGBA( PIFilter*  iPlugin, const PIUInt8*  iYUV, const PIUInt8*  iAlpha, P
 int
 TVRGBAUnmultiply( PIFilter*  iPlugin, const PIPixel*  iRGBA, PIPixel*  oRGBA, int  iCount )
 {
-    INTPTR  arg[] = { PIBCMD_RGBA_UNMULTIPLY, (INTPTR)iRGBA, (INTPTR)oRGBA, iCount, 0,0,0,0 }; 
+    INTPTR  arg[] = { PIBCMD_RGBA_UNMULTIPLY, (INTPTR)iRGBA, (INTPTR)oRGBA, iCount, 0,0,0,0 };
 
     return  (int)iPlugin->CallBack( iPlugin, CB_PIXEL_CMD, arg );
 }
@@ -1054,7 +1054,7 @@ TVOpenLocalFile( PIFilter*  iPlugin, const char*  iFileName, PIFlags  iReserved 
 char*
 TVGetLocalString( PIFilter*  iPlugin, void*  iLocaleFile, int  iLine )
 {
-    INTPTR  arg[] = { (INTPTR)iLocaleFile, iLine, 0,0,0,0 }; 
+    INTPTR  arg[] = { (INTPTR)iLocaleFile, iLine, 0,0,0,0 };
 
     return  (char *)iPlugin->CallBack( iPlugin, CB_LOCAL_GET_STRING, arg );
 }
@@ -1066,6 +1066,15 @@ TVCloseLocalFile( PIFilter*  iPlugin, void*  iLocaleFile )
     INTPTR  arg[] = { (INTPTR)iLocaleFile, 0,0,0,0 };
 
     iPlugin->CallBack( iPlugin, CB_LOCAL_CLOSE, arg );
+}
+
+
+PIBlock*
+TVGetLocalIcon( PIFilter*  iPlugin, void*  iIconName )
+{
+    INTPTR  arg[] = { (INTPTR)iIconName, 0,0,0,0 };
+
+    return  (PIBlock*)iPlugin->CallBack( iPlugin, CB_LOCAL_GET_ICON, arg );
 }
 
 

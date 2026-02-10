@@ -116,12 +116,14 @@ Flip( const PIBlock*  iSrc, PIBlock*  oDst, FlipParams  iParams )
 // you should try to respect it, as this makes life easier for the end user
 // (for stacking several requesters, and so on...).
 #define  REQUESTER_W  185
-#define  REQUESTER_H  30
+#define  REQUESTER_H  60
 
 
 // ID's of GUI components
 #define  ID_FLIPX     10
 #define  ID_FLIPY     11
+#define  ID_FLIPXICON 12
+#define  ID_FLIPYICON 13
 
 
 
@@ -330,15 +332,29 @@ PI_Parameters( PIPlugin*  iPlugin, const char*  iArgs )
             TVAddButtonReq( iPlugin, Data.mReq, 9, y, REQUESTER_W-19, 0, ID_FLIPX, bPIButtonFlags_Normal|bPIButtonFlags_Action, TXT_FLIPX );
 
             // Put a help messages on it.
-            TVSetButtonInfoText( iPlugin, Data.mReq, ID_FLIPX, TXT_HELP_FLIPX );                                                     // Help Popup
+            TVSetButtonInfoText( iPlugin, Data.mReq, ID_FLIPX, TXT_HELP_FLIPX );
 
             // On to the next button !
             y += 20;
 
             // And another button.
             TVAddButtonReq( iPlugin, Data.mReq, 9, y, REQUESTER_W-19, 0, ID_FLIPY, bPIButtonFlags_Normal|bPIButtonFlags_Action, TXT_FLIPY );
-            TVSetButtonInfoText( iPlugin, Data.mReq, ID_FLIPY, TXT_HELP_FLIPY );                                                     // Help Popup
+            TVSetButtonInfoText( iPlugin, Data.mReq, ID_FLIPY, TXT_HELP_FLIPY );
             y += 20;
+
+            // And now buttons with icons
+            int  x = 9;
+            TVAddButtonReq( iPlugin, Data.mReq, x, y, 25, 25, ID_FLIPXICON, bPIButtonFlags_Normal|bPIButtonFlags_Action, NULL );
+            TVSetButtonInfoText( iPlugin, Data.mReq, ID_FLIPXICON, TXT_HELP_FLIPX );
+            PIBlock*  icon = TVGetLocalIcon( iPlugin, "FlipX.png" );
+            TVPutButtonImage( iPlugin, Data.mReq, ID_FLIPXICON, icon, 0 );
+            x += 30;
+
+            TVAddButtonReq( iPlugin, Data.mReq, x, y, 25, 25, ID_FLIPYICON, bPIButtonFlags_Normal|bPIButtonFlags_Action, NULL );
+            TVSetButtonInfoText( iPlugin, Data.mReq, ID_FLIPYICON, TXT_HELP_FLIPY );
+            icon = TVGetLocalIcon( iPlugin, "FlipY.png" );
+            TVPutButtonImage( iPlugin, Data.mReq, ID_FLIPYICON, icon, 0 );
+
         }
         else
         {
@@ -366,6 +382,7 @@ PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPTR*  iArgs )
             switch( iArgs[0] )   // iArgs[0] is the ID of the selected button
             {
                 case  ID_FLIPX:   // "Flip X" button selected
+                case  ID_FLIPXICON:
                     // Update the data with the new parameter(s)
                     // Here we just set the direction of the flip
                     Data.mParams.mDirection = kFlipX;
@@ -377,6 +394,7 @@ PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPTR*  iArgs )
                     break;
 
                 case  ID_FLIPY:   // "Flip Y" button selected
+                case  ID_FLIPYICON:
                     Data.mParams.mDirection = kFlipY;
                     TVExecute( iPlugin );
                     break;

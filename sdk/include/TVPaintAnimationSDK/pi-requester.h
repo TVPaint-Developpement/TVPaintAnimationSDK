@@ -1016,6 +1016,21 @@ char*  TVGetLocalString( PIPlugin*  iPlugin, void*  iLocaleFile, int  iLine );
 */
 void  TVCloseLocalFile( PIPlugin*  iPlugin, void*  iLocaleFile );
 
+
+/** @brief  Gets an icon from the locale.
+
+    @param[in]  iPlugin      This plugin's reference.
+    @param[in]  iIconName    The icon's name, without path.
+
+    @note You OWN the returned PIBlock, you have to eventually dispose of it by calling TVFreePIBlock(), unless you pass it to TVPutButtonImage().
+
+    @return  The icon. Returns NULL on failure.
+
+    @ingroup  sdk_PIRequester
+*/
+PIBlock*  TVGetLocalIcon( PIFilter*  iPlugin, void*  iIconName );
+
+
 ///@}
 
 
