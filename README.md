@@ -1,8 +1,8 @@
 | Platform | Build Status                                                                                                                                                                                                                                                   |
 |----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| macOS    | [![macOS build status](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/macos-build.yml/badge.svg?branch=CPP-Integration)](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/macos-build.yml)       |
-| Linux    | [![Linux build status](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/linux-build.yml/badge.svg?branch=CPP-Integration)](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/linux-build.yml)       |
-| Windows  | [![Windows build status](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/windows-build.yml/badge.svg?branch=CPP-Integration)](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/windows-build.yml) |
+| macOS    | [![macOS build status](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/macos-build.yml/badge.svg?branch=main)](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/macos-build.yml)       |
+| Linux    | [![Linux build status](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/linux-build.yml/badge.svg?branch=main)](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/linux-build.yml)       |
+| Windows  | [![Windows build status](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/windows-build.yml/badge.svg?branch=main)](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/windows-build.yml) |
 
 # TVPaint Animation SDK
 
