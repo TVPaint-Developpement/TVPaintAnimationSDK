@@ -12,10 +12,6 @@
 
 #include "TVPaintAnimationSDK/pi-basics.h"
 
-#if defined(_WIN64)
-#include <Windows.h>
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -514,7 +510,7 @@ enum  ePIEvents
 
     @ingroup  sdk_PIPlugin
 */
-int  FAR PASCAL  PI_Open( PIPlugin*  iPlugin );
+int  STDCALL  PI_Open( PIPlugin*  iPlugin );
 
 
 /** @brief  Displays miscellaneous informations (Plugin author's, version, revision, ...).
@@ -527,7 +523,7 @@ int  FAR PASCAL  PI_Open( PIPlugin*  iPlugin );
     @see  calling_sequence
     @ingroup  sdk_PIPlugin
 */
-void  FAR PASCAL  PI_About( PIPlugin*  iPlugin );
+void  STDCALL  PI_About( PIPlugin*  iPlugin );
 
 
 /** @brief  Initializes the settings of the parameters.
@@ -543,7 +539,7 @@ void  FAR PASCAL  PI_About( PIPlugin*  iPlugin );
 
     @ingroup  sdk_PIPlugin
 */
-int  FAR PASCAL  PI_Parameters( PIPlugin*  iPlugin, const char*  iArgs );
+int  STDCALL  PI_Parameters( PIPlugin*  iPlugin, const char*  iArgs );
 
 
 /** @brief  Handles messages.
@@ -563,7 +559,7 @@ int  FAR PASCAL  PI_Parameters( PIPlugin*  iPlugin, const char*  iArgs );
 
     @ingroup  sdk_PIPlugin
 */
-int  FAR PASCAL  PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPTR*  iArgs );
+int  STDCALL  PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPTR*  iArgs );
 
 
 /** @brief  Close the plugin completly.
@@ -575,7 +571,7 @@ int  FAR PASCAL  PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPT
 
     @ingroup  sdk_PIPlugin
 */
-void  FAR PASCAL  PI_Close( PIPlugin*  iPlugin );
+void  STDCALL  PI_Close( PIPlugin*  iPlugin );
 
 
 /** @brief  This is the first function called by TVExecute().
@@ -589,7 +585,7 @@ void  FAR PASCAL  PI_Close( PIPlugin*  iPlugin );
 
     @ingroup  sdk_PIPlugin
 */
-int  FAR PASCAL  PI_SequenceStart( PIPlugin*  iPlugin, int  iCount );
+int  STDCALL  PI_SequenceStart( PIPlugin*  iPlugin, int  iCount );
 
 
 /** @brief  This is called before processing each frame in the sequence.
@@ -613,7 +609,7 @@ int  FAR PASCAL  PI_SequenceStart( PIPlugin*  iPlugin, int  iCount );
 
     @ingroup  sdk_PIPlugin
 */
-int  FAR PASCAL  PI_Start( PIPlugin*  iPlugin, double  iPos, double  iSize );
+int  STDCALL  PI_Start( PIPlugin*  iPlugin, double  iPos, double  iSize );
 
 
 /** @brief  Does the work to render the current image.
@@ -628,7 +624,7 @@ int  FAR PASCAL  PI_Start( PIPlugin*  iPlugin, double  iPos, double  iSize );
 
     @ingroup  sdk_PIPlugin
 */
-int  FAR PASCAL  PI_Work( PIPlugin*  iPlugin );
+int  STDCALL  PI_Work( PIPlugin*  iPlugin );
 
 
 /** @brief  This is called after the processing of each frame in the sequence.
@@ -639,7 +635,7 @@ int  FAR PASCAL  PI_Work( PIPlugin*  iPlugin );
 
     @ingroup  sdk_PIPlugin
 */
-void  FAR PASCAL  PI_Finish( PIPlugin*  iPlugin );
+void  STDCALL  PI_Finish( PIPlugin*  iPlugin );
 
 
 /** @brief  This is called after the processing of the whole sequence.
@@ -650,7 +646,7 @@ void  FAR PASCAL  PI_Finish( PIPlugin*  iPlugin );
 
     @ingroup  sdk_PIPlugin
 */
-void  FAR PASCAL  PI_SequenceFinish( PIPlugin*  iPlugin );
+void  STDCALL  PI_SequenceFinish( PIPlugin*  iPlugin );
 
 
 //=============================================================================================================== Deprecations

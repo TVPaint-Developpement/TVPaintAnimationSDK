@@ -75,9 +75,11 @@ typedef  unsigned long long  INTPTR;
 #endif
 
 // Obsolete Windows calling conventions - define as empty for modern code
-#define  FAR     ///< Windows junk.
-#define  PASCAL  ///< Windows junk.
-#define  WINAPI  ///< Windows junk.
+#if defined(_WIN64)
+#define  STDCALL   __stdcall
+#else
+#define  STDCALL
+#endif
 
 
 #ifdef __cplusplus
