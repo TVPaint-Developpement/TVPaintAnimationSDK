@@ -470,7 +470,7 @@ static  cDemoPlugin  sgPlugin;
 extern "C" {
 
 
-int FAR PASCAL
+int STDCALL
 PI_Open( PIPlugin*  iPlugin )
 {
     printf("PI_Open()\n");
@@ -478,7 +478,7 @@ PI_Open( PIPlugin*  iPlugin )
 }
 
 
-void FAR PASCAL
+void STDCALL
 PI_About( PIPlugin*  iPlugin )
 {
     printf("PI_About()\n");
@@ -486,7 +486,7 @@ PI_About( PIPlugin*  iPlugin )
 }
 
 
-int FAR PASCAL
+int STDCALL
 PI_Parameters( PIPlugin*  iPlugin, const char*  iArg )
 {
     printf("PI_Parameters()\n");
@@ -494,7 +494,7 @@ PI_Parameters( PIPlugin*  iPlugin, const char*  iArg )
 }
 
 
-void FAR PASCAL
+void STDCALL
 PI_Close( PIPlugin*  iPlugin )
 {
     printf("PI_Close()\n");
@@ -502,7 +502,7 @@ PI_Close( PIPlugin*  iPlugin )
 }
 
 
-int FAR PASCAL
+int STDCALL
 PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPTR*  iArgs )
 {
     //    printf("PI_Msg()\n");
@@ -510,7 +510,7 @@ PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPTR*  iArgs )
 }
 
 
-int FAR PASCAL
+int STDCALL
 PI_SequenceStart( PIPlugin*  iPlugin, int  iCount )
 {
     printf("PI_SequenceStart()\n");
@@ -518,7 +518,7 @@ PI_SequenceStart( PIPlugin*  iPlugin, int  iCount )
 }
 
 
-int FAR PASCAL
+int STDCALL
 PI_Start( PIPlugin*  iPlugin, double  iPos, double  iSize )
 {
     printf("PI_Start()\n");
@@ -526,7 +526,7 @@ PI_Start( PIPlugin*  iPlugin, double  iPos, double  iSize )
 }
 
 
-int FAR PASCAL
+int STDCALL
 PI_Work( PIPlugin*  iPlugin )
 {
     printf("PI_Work()\n");
@@ -534,7 +534,7 @@ PI_Work( PIPlugin*  iPlugin )
 }
 
 
-void FAR PASCAL
+void STDCALL
 PI_Finish( PIPlugin*  iPlugin )
 {
     printf("PI_Finish()\n");
@@ -542,7 +542,7 @@ PI_Finish( PIPlugin*  iPlugin )
 }
 
 
-void FAR PASCAL
+void STDCALL
 PI_SequenceFinish( PIPlugin*  iPlugin )
 {
     printf("PI_SequenceFinish()\n");
