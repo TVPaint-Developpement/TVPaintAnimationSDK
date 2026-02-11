@@ -196,7 +196,7 @@ GetLocalString( PIPlugin*  iPlugin, int  iNum, char*  iDefault )
 // "About" function.
 
 
-void FAR PASCAL
+void STDCALL
 PI_About( PIPlugin*  iPlugin )
 {
     char  text[256];
@@ -213,7 +213,7 @@ PI_About( PIPlugin*  iPlugin )
 // Function called at TVPaint startup, when the filter is loaded.
 // Should do as little as possible to keep TVPaint's startup time small.
 
-int FAR PASCAL
+int STDCALL
 PI_Open( PIPlugin*  iPlugin )
 {
     char  tmp[256];
@@ -240,7 +240,7 @@ PI_Open( PIPlugin*  iPlugin )
 /**************************************************************************************/
 // TVPaint shutdown: we make all the necessary cleanup
 
-void FAR PASCAL
+void STDCALL
 PI_Close( PIPlugin*  iPlugin )
 {
     if( Data.mLocalFile )
@@ -258,7 +258,7 @@ PI_Close( PIPlugin*  iPlugin )
 /**************************************************************************************/
 // we have something to do !
 
-int FAR PASCAL
+int STDCALL
 PI_Parameters( PIPlugin*  iPlugin, const char*  iArgs )
 {
     if( iArgs )
@@ -370,7 +370,7 @@ PI_Parameters( PIPlugin*  iPlugin, const char*  iArgs )
 /**************************************************************************************/
 // something happenned that needs our attention.
 
-int FAR PASCAL
+int STDCALL
 PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPTR*  iArgs )
 {
     // what did happen ?
@@ -435,7 +435,7 @@ PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPTR*  iArgs )
 // and precompute all the stuff that doesn't change from frame to frame.
 
 
-int FAR PASCAL
+int STDCALL
 PI_SequenceStart( PIPlugin*  iPlugin, int  iNumImages )
 {
     // In this simple example we don't have anything to allocate/precompute.
@@ -447,7 +447,7 @@ PI_SequenceStart( PIPlugin*  iPlugin, int  iNumImages )
 
 // Here you should cleanup what you've done in PI_SequenceStart
 
-void FAR PASCAL
+void STDCALL
 PI_SequenceFinish( PIPlugin*  iPlugin )
 {
     // nothing special to cleanup
@@ -458,7 +458,7 @@ PI_SequenceFinish( PIPlugin*  iPlugin )
 // This is called before each frame.
 // Here you should allocate memory and precompute all the stuff you can.
 
-int FAR PASCAL
+int STDCALL
 PI_Start( PIPlugin*  iPlugin, double  iPos, double  iSize )
 {
     // In this simple example we don't have anything to allocate/precompute.
@@ -468,7 +468,7 @@ PI_Start( PIPlugin*  iPlugin, double  iPos, double  iSize )
 }
 
 
-void FAR PASCAL
+void STDCALL
 PI_Finish( PIPlugin*  iPlugin )
 {
     // nothing special to cleanup
@@ -481,7 +481,7 @@ PI_Finish( PIPlugin*  iPlugin )
 // the iPlugin->Current image.
 // In all other functions you just have the right to read it.
 
-int FAR PASCAL
+int STDCALL
 PI_Work( PIPlugin*  iPlugin )
 {
     Flip( iPlugin->Undo, iPlugin->Current, Data.mParams );

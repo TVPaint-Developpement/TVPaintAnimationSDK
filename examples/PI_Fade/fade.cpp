@@ -522,70 +522,70 @@ static  cFadePlugin  sgPlugin;
 extern "C" {
 
 
-int FAR PASCAL
+int STDCALL
 PI_Open( PIPlugin*  iPlugin )
 {
     return  sgPlugin.PI2Open( iPlugin );
 }
 
 
-void FAR PASCAL
+void STDCALL
 PI_About( PIPlugin*  iPlugin )
 {
     sgPlugin.PI2About( iPlugin );
 }
 
 
-int FAR PASCAL
+int STDCALL
 PI_Parameters( PIPlugin*  iPlugin, const char*  iArg )
 {
     return  sgPlugin.PI2Parameters( iPlugin, iArg );
 }
 
 
-void FAR PASCAL
+void STDCALL
 PI_Close( PIPlugin*  iPlugin )
 {
     sgPlugin.PI2Close( iPlugin );
 }
 
 
-int FAR PASCAL
+int STDCALL
 PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPTR*  iArgs )
 {
     return  sgPlugin.PI2Msg( iPlugin, iEvent, iReq, iArgs );
 }
 
 
-int FAR PASCAL
+int STDCALL
 PI_SequenceStart( PIPlugin*  iPlugin, int  iCount )
 {
     return  sgPlugin.PI2SequenceStart( iPlugin, iCount );
 }
 
 
-int FAR PASCAL
+int STDCALL
 PI_Start( PIPlugin*  iPlugin, double  iPos, double  iSize )
 {
     return  sgPlugin.PI2Start( iPlugin, iPos, iSize );
 }
 
 
-int FAR PASCAL
+int STDCALL
 PI_Work( PIPlugin*  iPlugin )
 {
     return  sgPlugin.PI2Work( iPlugin );
 }
 
 
-void FAR PASCAL
+void STDCALL
 PI_Finish( PIPlugin*  iPlugin )
 {
     sgPlugin.PI2Finish( iPlugin );
 }
 
 
-void FAR PASCAL
+void STDCALL
 PI_SequenceFinish( PIPlugin*  iPlugin )
 {
     sgPlugin.PI2SequenceFinish( iPlugin );

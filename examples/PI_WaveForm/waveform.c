@@ -1456,7 +1456,7 @@ static  void  SaveConfig( PIPlugin*  iPlugin, int  iOpen )
 
 /****************************************************************/
 
-int  FAR  PASCAL  PI_Open( PIPlugin*  iPlugin )
+int  STDCALL  PI_Open( PIPlugin*  iPlugin )
 {
     char  temp[512];
     int  open;
@@ -1488,7 +1488,7 @@ int  FAR  PASCAL  PI_Open( PIPlugin*  iPlugin )
 
 /****************************************************************/
 
-void  FAR  PASCAL  PI_About( PIPlugin*  iPlugin )
+void  STDCALL  PI_About( PIPlugin*  iPlugin )
 {
     char  text[256];
 
@@ -1501,7 +1501,7 @@ void  FAR  PASCAL  PI_About( PIPlugin*  iPlugin )
 
 /****************************************************************/
 
-int  FAR  PASCAL  PI_Parameters( PIPlugin*  iPlugin, const char*  iArg )
+int  STDCALL  PI_Parameters( PIPlugin*  iPlugin, const char*  iArg )
 {
     UserParam*  param = (UserParam*)iPlugin->UserParametersPtr;
 
@@ -1529,7 +1529,7 @@ int  FAR  PASCAL  PI_Parameters( PIPlugin*  iPlugin, const char*  iArg )
 
 /****************************************************************/
 
-int  FAR  PASCAL  PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPTR*  iTag )
+int  STDCALL  PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTPTR*  iTag )
 {
     UserParam*  param = (UserParam*)iPlugin->UserParametersPtr;
     char  temp[512];
@@ -1668,34 +1668,34 @@ int  FAR  PASCAL  PI_Msg( PIPlugin*  iPlugin, INTPTR  iEvent, INTPTR  iReq, INTP
 
 /****************************************************************/
 
-int  FAR  PASCAL  PI_SequenceStart( PIPlugin*  iPlugin,  int iNum )
+int  STDCALL  PI_SequenceStart( PIPlugin*  iPlugin,  int iNum )
 {
     return  1;
 }
 
-int  FAR  PASCAL  PI_Start( PIPlugin*  iPlugin, double  iPos, double  iSize )
+int  STDCALL  PI_Start( PIPlugin*  iPlugin, double  iPos, double  iSize )
 {
     return  1;
 }
 
-int  FAR  PASCAL  PI_Work( PIPlugin*  iPlugin )
+int  STDCALL  PI_Work( PIPlugin*  iPlugin )
 {
     ExecuteVectorScope( iPlugin, iPlugin->Current, iPlugin->Undo );
 
     return  1;
 }
 
-void  FAR  PASCAL  PI_Finish( PIPlugin*  iPlugin )
+void  STDCALL  PI_Finish( PIPlugin*  iPlugin )
 {
 }
 
-void  FAR  PASCAL  PI_SequenceFinish( PIPlugin*  iPlugin )
+void  STDCALL  PI_SequenceFinish( PIPlugin*  iPlugin )
 {
 }
 
 /****************************************************************/
 
-void  FAR  PASCAL  PI_Close( PIPlugin*  iPlugin )
+void  STDCALL  PI_Close( PIPlugin*  iPlugin )
 {
     if( sgReq != 0 )
         TVCloseReq( iPlugin, sgReq );
