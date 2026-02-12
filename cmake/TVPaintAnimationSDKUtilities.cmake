@@ -4,7 +4,8 @@
 #
 # Creates the bundle structure required for a TVPaint Animation plugin.
 # TVPaint plugins must be packaged with a .plugin extension and a platform-specific
-# directory structure.
+# directory structure. The bundle name automatically includes the OS suffix:
+#   PluginName-MacOS.plugin, PluginName-Windows.plugin, or PluginName-Linux.plugin
 #
 # Parameters:
 #   TARGET_NAME : Name of the CMake target for the plugin to package
@@ -15,45 +16,70 @@
 #     Automatically configures the target as a native macOS bundle with:
 #     - BUNDLE YES : Enables bundle creation
 #     - BUNDLE_EXTENSION plugin : Uses .plugin extension instead of .app
+#     The bundle is then renamed to include the OS suffix via a post-build step.
+#     The binary inside the bundle keeps its original name.
 #
-#     Result: PluginName.plugin/ (native macOS bundle)
+#     Result: PluginName-MacOS.plugin/Contents/MacOS/PluginName
 #
-#   Windows/Linux:
+#   Windows:
 #     Manually creates the bundle structure via post-build commands:
-#     1. Creates the directory: PluginName.plugin/Contents/{Windows|Linux}/
+#     1. Creates the directory: PluginName-Windows.plugin/Contents/Windows/
 #     2. Copies the compiled library into this directory
 #
-#     Result:
-#       Windows: PluginName.plugin/Contents/Windows/PluginName.dll
-#       Linux:   PluginName.plugin/Contents/Linux/libPluginName.so
+#     Result: PluginName-Windows.plugin/Contents/Windows/PluginName.dll
+#
+#   Linux:
+#     Manually creates the bundle structure via post-build commands:
+#     1. Creates the directory: PluginName-Linux.plugin/Contents/Linux/
+#     2. Copies the compiled library into this directory
+#
+#     Result: PluginName-Linux.plugin/Contents/Linux/libPluginName.so
 #
 # Usage example:
 #   add_library( MyPlugin SHARED plugin.cpp )
 #   create_plugin_bundle( MyPlugin )
+#   # Produces: MyPlugin-MacOS.plugin, MyPlugin-Windows.plugin, or MyPlugin-Linux.plugin
 #
 # ================================================================================================
 function( create_plugin_bundle TARGET_NAME )
+    if( APPLE )
+        set( BUNDLE_OS_SUFFIX "MacOS" )
+    elseif( WIN32 )
+        set( BUNDLE_OS_SUFFIX "Windows" )
+    elseif( LINUX )
+        set( BUNDLE_OS_SUFFIX "Linux" )
+    else()
+        message( FATAL_ERROR "create_plugin_bundle: Unsupported platform. Only MacOS, Windows, and Linux are supported." )
+    endif()
+
+    set( BUNDLE_NAME "${TARGET_NAME}-${BUNDLE_OS_SUFFIX}" )
+
+    # Store the bundle name as a custom property so other functions can retrieve it
+    set_target_properties( ${TARGET_NAME} PROPERTIES TVPASDK_BUNDLE_NAME "${BUNDLE_NAME}" )
+
     if( APPLE )
         set_target_properties( ${TARGET_NAME}
                                PROPERTIES
                                BUNDLE YES
                                BUNDLE_EXTENSION plugin )
-    else()
-        if( WIN32 )
-            set( BUNDLE_ARCH_DIR "Windows" )
-        else()
-            set( BUNDLE_ARCH_DIR "Linux" )
-        endif()
 
         add_custom_command( TARGET ${TARGET_NAME} POST_BUILD
+                            COMMAND ${CMAKE_COMMAND} -E rm -rf
+                            "${CMAKE_CURRENT_BINARY_DIR}/${BUNDLE_NAME}.plugin"
+                            COMMAND ${CMAKE_COMMAND} -E rename
+                            "$<TARGET_BUNDLE_DIR:${TARGET_NAME}>"
+                            "${CMAKE_CURRENT_BINARY_DIR}/${BUNDLE_NAME}.plugin"
+                            COMMENT "Rename bundle to ${BUNDLE_NAME}.plugin" )
+    else()
+        add_custom_command( TARGET ${TARGET_NAME} POST_BUILD
                             COMMAND ${CMAKE_COMMAND} -E make_directory
-                            "${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}.plugin/Contents/${BUNDLE_ARCH_DIR}"
-                            COMMENT "Creation of the bundle structure for ${TARGET_NAME}" )
+                            "${CMAKE_CURRENT_BINARY_DIR}/${BUNDLE_NAME}.plugin/Contents/${BUNDLE_OS_SUFFIX}"
+                            COMMENT "Creation of the bundle structure for ${BUNDLE_NAME}" )
 
         add_custom_command( TARGET ${TARGET_NAME} POST_BUILD
                             COMMAND ${CMAKE_COMMAND} -E copy
                             "$<TARGET_FILE:${TARGET_NAME}>"
-                            "${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}.plugin/Contents/${BUNDLE_ARCH_DIR}/"
+                            "${CMAKE_CURRENT_BINARY_DIR}/${BUNDLE_NAME}.plugin/Contents/${BUNDLE_OS_SUFFIX}/"
                             COMMENT "Copy of ${TARGET_NAME} in the bundle structure" )
     endif()
 endfunction()
@@ -62,100 +88,38 @@ endfunction()
 # copy_resources_to_bundle
 # ================================================================================================
 #
-# Copies resource files (e.g., .loc localization files) into the Resources directory
-# of a TVPaint plugin bundle.
+# Copies the contents of a resource directory into the Resources directory of a TVPaint
+# plugin bundle. The directory structure is preserved as-is, so the developer must organize
+# their source Resources folder to match the expected bundle layout.
 #
-# Each argument can be:
-#   - An explicit file path:  ${CMAKE_CURRENT_SOURCE_DIR}/english.loc
-#   - A glob pattern:         ${CMAKE_CURRENT_SOURCE_DIR}/*.loc
-#   - A directory:            ${CMAKE_CURRENT_SOURCE_DIR}/resources
-#     (all files directly inside the directory will be copied)
-#
-# Note: Glob patterns and directories are resolved at CMake configure time.
-#       New files matching a pattern will only be picked up after re-running CMake.
+# Note: create_plugin_bundle() must be called before this function, as it relies on the
+#       TVPASDK_BUNDLE_NAME property set by create_plugin_bundle().
 #
 # Parameters:
-#   TARGET_NAME              : Name of the CMake target for the plugin
-#   [resource files/patterns]: List of file paths, glob patterns, or directories
+#   TARGET_NAME    : Name of the CMake target for the plugin
+#   RESOURCES_DIR  : Path to the directory whose contents will be copied into Resources
 #
 # Platform-specific behavior:
 #
-#   macOS:
-#     Copies files into: PluginName.plugin/Contents/Resources/
-#     Uses $<TARGET_BUNDLE_CONTENT_DIR> to resolve the correct bundle path.
+#   Copies into: PluginName-{MacOS|Windows|Linux}.plugin/Contents/Resources/
 #
-#   Windows/Linux:
-#     Copies files into: PluginName.plugin/Contents/Resources/
-#     Uses the binary directory to resolve the bundle path.
-#
-# Usage examples:
-#   # Explicit file list
+# Usage example:
 #   copy_resources_to_bundle( MyPlugin
-#                              ${CMAKE_CURRENT_SOURCE_DIR}/english.loc
-#                              ${CMAKE_CURRENT_SOURCE_DIR}/french.loc )
-#
-#   # Glob pattern
-#   copy_resources_to_bundle( MyPlugin
-#                              ${CMAKE_CURRENT_SOURCE_DIR}/*.loc )
-#
-#   # Directory containing resources
-#   copy_resources_to_bundle( MyPlugin
-#                              ${CMAKE_CURRENT_SOURCE_DIR}/resources )
-#
-#   # Mix of all three
-#   copy_resources_to_bundle( MyPlugin
-#                              ${CMAKE_CURRENT_SOURCE_DIR}/icon.png
-#                              ${CMAKE_CURRENT_SOURCE_DIR}/*.loc
-#                              ${CMAKE_CURRENT_SOURCE_DIR}/resources )
+#                              ${CMAKE_CURRENT_SOURCE_DIR}/Resources )
 #
 # ================================================================================================
-function( copy_resources_to_bundle TARGET_NAME )
-    if( APPLE )
-        set( BUNDLE_RESOURCES_DIR "$<TARGET_BUNDLE_CONTENT_DIR:${TARGET_NAME}>/Resources" )
-    else()
-        set( BUNDLE_RESOURCES_DIR "${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}.plugin/Contents/Resources" )
+function( copy_resources_to_bundle TARGET_NAME RESOURCES_DIR )
+    get_target_property( BUNDLE_NAME ${TARGET_NAME} TVPASDK_BUNDLE_NAME )
+
+    if( NOT BUNDLE_NAME )
+        message( FATAL_ERROR "copy_resources_to_bundle: create_plugin_bundle() must be called before copy_resources_to_bundle() for target ${TARGET_NAME}" )
     endif()
 
+    set( BUNDLE_RESOURCES_DIR "${CMAKE_CURRENT_BINARY_DIR}/${BUNDLE_NAME}.plugin/Contents/Resources" )
+
     add_custom_command( TARGET ${TARGET_NAME} POST_BUILD
-                        COMMAND ${CMAKE_COMMAND} -E make_directory
+                        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                        "${RESOURCES_DIR}"
                         "${BUNDLE_RESOURCES_DIR}"
-                        COMMENT "Creation of the Resources directory for ${TARGET_NAME}" )
-
-    # Resolve all arguments into a flat list of files
-    set( RESOLVED_FILES )
-
-    foreach( RESOURCE_ENTRY IN LISTS ARGN )
-        if( IS_DIRECTORY "${RESOURCE_ENTRY}" )
-            # Directory: glob all files directly inside it
-            file( GLOB _DIR_FILES "${RESOURCE_ENTRY}/*" )
-            foreach( _FILE IN LISTS _DIR_FILES )
-                if( NOT IS_DIRECTORY "${_FILE}" )
-                    list( APPEND RESOLVED_FILES "${_FILE}" )
-                endif()
-            endforeach()
-        elseif( RESOURCE_ENTRY MATCHES "[*?\\[]" )
-            # Glob pattern: expand it
-            file( GLOB _GLOB_FILES "${RESOURCE_ENTRY}" )
-            foreach( _FILE IN LISTS _GLOB_FILES )
-                if( NOT IS_DIRECTORY "${_FILE}" )
-                    list( APPEND RESOLVED_FILES "${_FILE}" )
-                endif()
-            endforeach()
-        else()
-            # Explicit file path
-            list( APPEND RESOLVED_FILES "${RESOURCE_ENTRY}" )
-        endif()
-    endforeach()
-
-    list( REMOVE_DUPLICATES RESOLVED_FILES )
-
-    foreach( RESOURCE_FILE IN LISTS RESOLVED_FILES )
-        cmake_path( GET RESOURCE_FILE FILENAME RESOURCE_FILENAME )
-
-        add_custom_command( TARGET ${TARGET_NAME} POST_BUILD
-                            COMMAND ${CMAKE_COMMAND} -E copy
-                            "${RESOURCE_FILE}"
-                            "${BUNDLE_RESOURCES_DIR}/"
-                            COMMENT "Copy of ${RESOURCE_FILENAME} in the bundle Resources" )
-    endforeach()
+                        COMMENT "Copy of resources into the bundle for ${BUNDLE_NAME}" )
 endfunction()
