@@ -1,5 +1,5 @@
-| Platform | Build Status                                                                                                                                                                                                                                                   |
-|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Platform | Build Status                                                                                                                                                                                                                                        |
+|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | macOS    | [![macOS build status](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/macos-build.yml/badge.svg?branch=main)](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/macos-build.yml)       |
 | Linux    | [![Linux build status](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/linux-build.yml/badge.svg?branch=main)](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/linux-build.yml)       |
 | Windows  | [![Windows build status](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/windows-build.yml/badge.svg?branch=main)](https://github.com/TVPaint-Developpement/TVPaintAnimationSDK/actions/workflows/windows-build.yml) |
@@ -23,6 +23,7 @@ Both SDKs are built as static libraries and can be used independently or togethe
   - [C Plugin Example](#c-plugin-example)
   - [C++ Plugin Example](#c-plugin-example-1)
 - [Examples](#examples)
+- [Tools](#tools)
 - [Documentation](#documentation)
   - [Generating API Documentation](#generating-api-documentation)
 
@@ -64,7 +65,7 @@ ninja uninstall
   Build the C++ wrapper SDK static library (requires C SDK)
 
 - **`TVPASDK_BUILD_EXAMPLE`** (default: `OFF`)
-  Build example plugins (PI_Flip, PI_WaveForm, PI_Demo)
+  Build example plugins (PI_Flip, PI_WaveForm, PI_Fade, PI_Demo)
 
 ### Custom Installation Path
 
@@ -125,33 +126,46 @@ After running `ninja install`, the SDK is organized as follows:
 
 ## Plugin Creation
 
-TVPaint plugins are built as dynamic libraries with a `.plugin` bundle structure. The SDK provides a CMake utility function `create_plugin_bundle()` that automatically creates this structure for all platforms.
+TVPaint plugins are built as dynamic libraries with a `.plugin` bundle structure. The SDK provides two CMake utility functions, both available after calling `find_package(TVPaintAnimationSDK)`:
+
+### CMake Utility Functions
+
+#### `create_plugin_bundle( TARGET_NAME )`
+
+Creates the platform-specific `.plugin` bundle structure after the build. The bundle name automatically includes the OS suffix:
+
+| Platform | Output |
+|----------|--------|
+| macOS    | `PluginName-MacOS.plugin/Contents/MacOS/PluginName` |
+| Windows  | `PluginName-Windows.plugin/Contents/Windows/PluginName.dll` |
+| Linux    | `PluginName-Linux.plugin/Contents/Linux/libPluginName.so` |
+
+Must be called before `copy_resources_to_bundle()`.
+
+#### `copy_resources_to_bundle( TARGET_NAME  RESOURCES_DIR )`
+
+Copies the contents of `RESOURCES_DIR` into the `Contents/Resources/` directory of the bundle. The source directory structure is preserved as-is, so organize your `Resources/` folder to match the expected bundle layout (language subdirectories such as `english/`, `french/`, etc.).
+
+`create_plugin_bundle()` must be called first, as this function relies on the bundle name it sets.
 
 ### C Plugin Example
 
-Here's a minimal CMake configuration for a C-based plugin:
-
 ```cmake
-cmake_minimum_required(VERSION 3.25 FATAL_ERROR)
-project(MyPlugin LANGUAGES C)
+cmake_minimum_required( VERSION 3.25 FATAL_ERROR )
+project( MyPlugin LANGUAGES C )
 
-# Find the C SDK
-find_package(TVPaintAnimationSDK REQUIRED)
+find_package( TVPaintAnimationSDK REQUIRED )
 
-# Create plugin as a MODULE (dynamic library)
-add_library(${PROJECT_NAME} MODULE
+add_library( ${PROJECT_NAME} MODULE
     my_plugin.c
-    $<$<PLATFORM_ID:Windows>:my_plugin.def>  # Windows export file
+    $<$<PLATFORM_ID:Windows>:my_plugin.def>
 )
 
-# Create the .plugin bundle structure
-# This function is provided by TVPaintAnimationSDKUtilities.cmake
-create_plugin_bundle(${PROJECT_NAME})
+create_plugin_bundle( ${PROJECT_NAME} )
+copy_resources_to_bundle( ${PROJECT_NAME}
+                          ${CMAKE_CURRENT_SOURCE_DIR}/Resources )
 
-# Link against the C SDK
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    TVPaintAnimationSDK::TVPaintAnimationSDK
-)
+target_link_libraries( ${PROJECT_NAME} PRIVATE TVPaintAnimationSDK::TVPaintAnimationSDK )
 ```
 
 **Minimal C plugin code (`my_plugin.c`):**
@@ -193,31 +207,24 @@ int PI_Msg(int iMsg, int iOpt1, int iOpt2, long lOpt1, long lOpt2, void* pOpt) {
 
 ### C++ Plugin Example
 
-For C++ plugins using the object-oriented wrapper:
-
 ```cmake
-cmake_minimum_required(VERSION 3.25 FATAL_ERROR)
-project(MyCppPlugin LANGUAGES CXX)
+cmake_minimum_required( VERSION 3.25 FATAL_ERROR )
+project( MyCppPlugin LANGUAGES CXX )
 
-# Find the C++ SDK (automatically finds C SDK as dependency)
-find_package(TVPaintAnimationSDK-CPP REQUIRED)
+find_package( TVPaintAnimationSDK-CPP REQUIRED )
 
-# Create plugin as a MODULE
-add_library(${PROJECT_NAME} MODULE
+add_library( ${PROJECT_NAME} MODULE
     my_cpp_plugin.cpp
     $<$<PLATFORM_ID:Windows>:my_cpp_plugin.def>
 )
 
-# Require C++20
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+target_compile_features( ${PROJECT_NAME} PRIVATE cxx_std_20 )
 
-# Create the .plugin bundle structure
-create_plugin_bundle(${PROJECT_NAME})
+create_plugin_bundle( ${PROJECT_NAME} )
+copy_resources_to_bundle( ${PROJECT_NAME}
+                          ${CMAKE_CURRENT_SOURCE_DIR}/Resources )
 
-# Link against the C++ SDK
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    TVPaintAnimationSDK::TVPaintAnimationSDK-CPP
-)
+target_link_libraries( ${PROJECT_NAME} PRIVATE TVPaintAnimationSDK::TVPaintAnimationSDK-CPP )
 ```
 
 **Minimal C++ plugin code (`my_cpp_plugin.cpp`):**
@@ -276,7 +283,14 @@ To install your plugin, copy the entire `.plugin` directory to TVPaint's plugin 
 
 ## Examples
 
-The SDK includes three example plugins demonstrating different features:
+The SDK includes example plugins demonstrating different features. Enable them with:
+
+```bash
+cmake .. -DTVPASDK_BUILD_EXAMPLE=ON -G Ninja
+ninja
+```
+
+Built plugins will be in `build/examples/PluginName/`.
 
 ### PI_Flip (`examples/PI_Flip/`)
 A simple C-based filter plugin that flips images horizontally or vertically.
@@ -291,6 +305,14 @@ An advanced C-based waveform monitor and vectorscope.
 - Localization with `.loc` files
 - Anti-aliased drawing utilities
 
+### PI_Fade (`examples/PI_Fade/`)
+A C++ filter plugin that fades the image to black using the C++ SDK.
+- Demonstrates the C++ SDK with a real filter use case
+- Shows key handling (`NeedKeys`, `CreateKeys`)
+- Implements live preview via `MetaEventPreview`
+- Uses `cTV2Window` with checkboxes and action buttons
+- Good reference for C++ filter plugins with preview support
+
 ### PI_Demo (`examples/PI_Demo/`)
 Comprehensive C++ example using the modern SDK wrapper.
 - Multi-tab interface
@@ -301,14 +323,27 @@ Comprehensive C++ example using the modern SDK wrapper.
 - Meta-event handling
 - **Best reference for modern C++ plugin development**
 
-To build the examples:
+### SDK_Utilities (`examples/SDK_Utilities/`)
+Reusable C utility helpers shared across C example plugins.
+- `colorpicker`: Color selection and block generation
+- `colorrange`: Color range handling
+
+These are not standalone plugins but source files intended to be compiled into other plugins.
+
+## Tools
+
+### tvp-merge-plugin.py (`tools/`)
+
+A Python tool to merge multiple per-platform `.plugin` bundles into a single universal multi-platform bundle. Useful when distributing a plugin that supports Windows, Linux, and macOS.
 
 ```bash
-cmake .. -DTVPASDK_BUILD_EXAMPLE=ON -G Ninja
-ninja
+python tools/tvp-merge-plugin.py PI_Flip-Universal.plugin \
+    PI_Flip-MacOS.plugin \
+    PI_Flip-Windows.plugin \
+    PI_Flip-Linux.plugin
 ```
 
-Built plugins will be in `build/examples/PluginName/`.
+See [`tools/README.md`](tools/README.md) for full documentation.
 
 ## Documentation
 
