@@ -11,6 +11,7 @@ from textwrap import dedent
 logger = logging.getLogger(__name__)
 
 EXCLUDE_FILES = ['.DS_Store', 'Thumbs.db', 'desktop.ini']
+VALID_RESOURCE_EXTENSIONS = {'.txt', '.png'}
 SUPPORTED_LANGUAGES = ['chinese', 'english', 'french', 'japanese']
 
 
@@ -162,8 +163,12 @@ def collect_resources(p: Path, resources_checksum: dict[Path, str]) -> None:
         for f in r.iterdir():
             if f.is_file() and f.name in EXCLUDE_FILES:
                 continue
-            elif f.is_dir():
+            if f.is_dir():
                 raise ValueError(f'Unexpected directory "{f}" in "{r}".')
+            if f.suffix not in VALID_RESOURCE_EXTENSIONS:
+                raise ValueError(f'Unexpected file type "{f.name}" in "{r}".')
+            if f.suffix == '.txt' and f.name != 'strings.txt':
+                raise ValueError(f'Unexpected text file "{f.name}" in "{r}", expected "strings.txt".')
 
             resources_checksum[f.relative_to(p)] = sha256(f.read_bytes()).hexdigest()
 
