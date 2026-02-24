@@ -2,7 +2,9 @@
 
 ## tvp-merge-plugin.py
 
-Python tool to merge multiple per-platform TVPaint `.plugin` bundles into a single universal multi-platform bundle.
+Python tool to verify and merge TVPaint `.plugin` bundles. It supports two subcommands:
+- **`verify`**: validate a single plugin bundle structure
+- **`merge`**: merge multiple per-platform bundles into a single universal multi-platform bundle
 
 ### Requirements
 
@@ -12,28 +14,66 @@ Python tool to merge multiple per-platform TVPaint `.plugin` bundles into a sing
 ### Usage
 
 ```
-python tvp-merge-plugin.py <output> <input1> <input2> [input3]
+python tvp-merge-plugin.py <command> [options]
 ```
 
-#### Arguments
+#### Commands
+
+| Command | Description |
+|---|---|
+| `verify` | Validate the structure of a single plugin bundle |
+| `merge` | Merge multiple per-platform bundles into a universal bundle |
+
+Run `python tvp-merge-plugin.py --help` or `python tvp-merge-plugin.py <command> --help` for details.
+
+---
+
+### `verify` — Validate a plugin bundle
+
+```
+python tvp-merge-plugin.py verify [--verbose] <plugin>
+```
+
+| Argument | Description |
+|---|---|
+| `plugin` | Path to the plugin bundle to validate (`.plugin` extension required) |
+| `--verbose` | Show detailed messages about the validation steps |
+
+#### Example
+
+```bash
+python tvp-merge-plugin.py verify PI_Flip-MacOS.plugin
+```
+
+Checks that the bundle has the correct directory structure, contains exactly one OS binary, and that resources are properly organized.
+
+---
+
+### `merge` — Merge plugin bundles
+
+```
+python tvp-merge-plugin.py merge [--verbose] [--dry-run] <output> <input1> <input2> [input3]
+```
 
 | Argument | Description |
 |---|---|
 | `output` | Output bundle path (must have `.plugin` extension) |
 | `inputs` | 2 or 3 input bundles (one per platform, `.plugin` extension required) |
 | `--dry-run` | Validate inputs and show what would be done without creating any output |
-| `--verbose` | Show detailed messages about operations being performed |
+| `--verbose` | Show detailed messages about operations being performed (always enabled with `--dry-run`) |
 
 #### Example
 
 ```bash
-python tvp-merge-plugin.py PI_Flip-Universal.plugin \
+python tvp-merge-plugin.py merge PI_Flip-Universal.plugin \
     PI_Flip-MacOS.plugin \
     PI_Flip-Windows.plugin \
     PI_Flip-Linux.plugin
 ```
 
 Creates `PI_Flip-Universal.plugin` containing binaries for all three platforms.
+
+---
 
 ### Expected Input Bundle Structure
 
@@ -93,7 +133,7 @@ If an error occurs during creation, the partially created output bundle is autom
 Validates the compatibility of input bundles without writing anything to disk:
 
 ```bash
-python tvp-merge-plugin.py --dry-run PI_Flip-Universal.plugin \
+python tvp-merge-plugin.py merge --dry-run PI_Flip-Universal.plugin \
     PI_Flip-MacOS.plugin \
     PI_Flip-Windows.plugin
 ```
