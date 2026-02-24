@@ -6,7 +6,7 @@ import sys
 from dataclasses import dataclass
 from hashlib import sha256
 from pathlib import Path
-
+from textwrap import dedent
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +26,7 @@ class CleanupOnError:
     :ivar output_path: The filesystem path to be cleaned up upon encountering an error.
     :type output_path: Path
     """
+
     def __init__(self, output_path: Path):
         self.output_path = output_path
 
@@ -146,7 +147,7 @@ def collect_resources(p: Path, resources_checksum: dict[Path, str]) -> None:
     :param p: The root directory to search for resources.
     :param resources_checksum: A mapping of file paths (relative to the root
                                 directory) to their corresponding SHA-256 checksum.
-    :raises ValueError: If an unexpected file is found in the directory or if an
+    :raises ValueError: If an unexpected file is found in the directory, or if an
                         unsupported language directory is encountered.
     """
     for r in p.iterdir():
@@ -339,41 +340,77 @@ def build_universal_plugin(output_path: Path, plugins: list[Plugin]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description='Merge multiple TVPaint .plugin bundles into a single universal bundle.',
-        epilog='''
-Example:
-    %(prog)s PI_Flip-Universal.plugin PI_Flip-MacOS.plugin PI_Flip-Windows.plugin PI_Flip-Linux.plugin
+        description='TVPaint plugin bundle tool: verify plugin structure or merge multiple bundles into a universal plugin.',
+        epilog=dedent('''
+        Examples:
+          %(prog)s verify MyPlugin-MacOS.plugin
+          %(prog)s merge PI_Flip-Universal.plugin PI_Flip-MacOS.plugin PI_Flip-Windows.plugin
+        '''),
+        formatter_class=argparse.RawDescriptionHelpFormatter)
 
-This will create PI_Flip-Universal.plugin containing binaries for all three platforms.
-        ''')
+    subparsers = parser.add_subparsers(dest='command')
 
-    parser.add_argument('output', type=Path, help='Output universal plugin path (e.g., MyPlugin-Universal.plugin)')
-    parser.add_argument('inputs', type=Path, nargs='+', help='Input plugin paths (e.g., MyPlugin-MacOS.plugin MyPlugin-Windows.plugin MyPlugin-Linux.plugin)')
-    parser.add_argument('--dry-run', action='store_true', help='Validate inputs and show what would be done without creating output')
-    parser.add_argument('--verbose', action='store_true', help='Show verbose output')
+    verify_parser = subparsers.add_parser('verify',
+                                          help='Plugin bundle to validate (e.g., MyPlugin-MacOS.plugin)',
+                                          description=dedent('''
+                                          Validates that a plugin bundle has the correct directory structure, contains exactly one OS binary, and that resources are properly organized.
+                                          '''),
+                                          epilog=dedent('''
+                                          Example:
+                                            %(prog)s MyPlugin-MacOS.plugin
+                                          '''),
+                                          formatter_class=argparse.RawDescriptionHelpFormatter)
+    verify_parser.add_argument('--verbose', action='store_true', help='Show verbose output')
+    verify_parser.add_argument('plugin', type=Path, help='Path to plugin bundle to verify')
+
+    merge_parser = subparsers.add_parser('merge',
+                                         help='Merge multiple plugin bundles into a single universal bundle',
+                                         description=dedent('''
+                                         Merges 2 or 3 OS-specific plugin bundles into a single universal bundle.
+                                         Validates structure and resource integrity before merging.
+                                         '''),
+                                         epilog=dedent('''
+                                         Example:
+                                           %(prog)s MyPlugin-Universal.plugin MyPlugin-MacOS.plugin MyPlugin-Windows.plugin MyPlugin-Linux.plugin
+                                         '''),
+                                         formatter_class=argparse.RawDescriptionHelpFormatter)
+    merge_parser.add_argument('--verbose', action='store_true', help='Show verbose output')
+    merge_parser.add_argument('--dry-run', action='store_true', help='Validate inputs and show what would be done without creating output')
+    merge_parser.add_argument('output', type=Path, help='Output universal plugin path (e.g., MyPlugin-Universal.plugin)')
+    merge_parser.add_argument('inputs', type=Path, nargs='+', help='Input plugin paths (e.g., MyPlugin-MacOS.plugin MyPlugin-Windows.plugin MyPlugin-Linux.plugin)')
 
     args = parser.parse_args()
 
-    if args.dry_run: args.verbose = True
+    verbose = args.verbose or (args.command == 'merge' and args.dry_run)
+    logging.basicConfig(level=logging.INFO if verbose else logging.WARNING, format='%(levelname)s: %(message)s')
 
-    logging.basicConfig(level=logging.INFO if args.verbose else logging.WARNING, format='%(levelname)s: %(message)s')
+    if args.command == 'verify':
+        try:
+            validate_plugin_structure(args.plugin)
+            logger.info(f'Plugin structure is valid: {args.plugin}')
+        except ValueError as e:
+            logger.error(e)
+            return 1
+    elif args.command == 'merge':
+        try:
+            validate_args(args.output, args.inputs)
+            plugins = validate_plugins_structure(args.inputs)
+            validate_compatibility(plugins)
 
-    try:
-        validate_args(args.output, args.inputs)
-        plugins = validate_plugins_structure(args.inputs)
-        validate_compatibility(plugins)
+            if args.dry_run:
+                logger.info('Dry run completed successfully.')
+                inputs_names = [n.name for n in args.inputs]
+                logger.info(f'Would merge {", ".join(inputs_names)} into {args.output}.')
+                return 0
 
-        if args.dry_run:
-            logger.info('Dry run completed successfully.')
-            inputs_names = [n.name for n in args.inputs]
-            logger.info(f'Would merge {", ".join(inputs_names)} into {args.output}.')
-            return 0
-
-        with CleanupOnError(args.output):
-            build_universal_plugin(args.output, plugins)
-            logger.info(f'Creation of the {args.output} plugin completed successfully.')
-    except ValueError as e:
-        logger.error(e)
+            with CleanupOnError(args.output):
+                build_universal_plugin(args.output, plugins)
+                logger.info(f'Universal plugin created successfully: {args.output}')
+        except ValueError as e:
+            logger.error(e)
+            return 1
+    else:
+        parser.print_help()
         return 1
 
     return 0
