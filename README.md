@@ -334,10 +334,16 @@ These are not standalone plugins but source files intended to be compiled into o
 
 ### tvp-merge-plugin.py (`tools/`)
 
-A Python tool to merge multiple per-platform `.plugin` bundles into a single universal multi-platform bundle. Useful when distributing a plugin that supports Windows, Linux, and macOS.
+A Python tool to verify and merge TVPaint `.plugin` bundles. It supports two subcommands:
+- **`verify`**: validate the structure of a single plugin bundle
+- **`merge`**: merge multiple per-platform bundles into a single universal multi-platform bundle
 
 ```bash
-python tools/tvp-merge-plugin.py PI_Flip-Universal.plugin \
+# Validate a single bundle
+python tools/tvp-merge-plugin.py verify PI_Flip-MacOS.plugin
+
+# Merge per-platform bundles into a universal bundle
+python tools/tvp-merge-plugin.py merge PI_Flip-Universal.plugin \
     PI_Flip-MacOS.plugin \
     PI_Flip-Windows.plugin \
     PI_Flip-Linux.plugin
