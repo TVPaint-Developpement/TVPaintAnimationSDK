@@ -274,10 +274,25 @@ cmake .. -G Ninja
 ninja
 ```
 
-The resulting plugin bundle will be created at:
-- **macOS**: `build/MyPlugin.plugin/Contents/MacOS/`
-- **Windows**: `build/MyPlugin.plugin/Contents/Windows/`
-- **Linux**: `build/MyPlugin.plugin/Contents/Linux/`
+The resulting plugin bundle will be created in `build/` with the following structure:
+
+```
+MyPlugin-<OS>.plugin/
+└── Contents/
+    ├── MacOS/          # or Windows/ or Linux/
+    │   └── MyPlugin    # binary (.dll on Windows, .so on Linux)
+    ├── Resources/      # optional, copied via copy_resources_to_bundle()
+    │   ├── english/
+    │   │   ├── strings.txt   # localization strings
+    │   │   └── *.png         # optional images
+    │   ├── french/
+    │   └── ...               # chinese, japanese
+    └── Info.plist      # optional (macOS)
+```
+
+**Resource file constraints:**
+- Language directories must be among: `english`, `french`, `chinese`, `japanese`
+- Each language directory may only contain `.png` files and a single `strings.txt` file
 
 To install your plugin, copy the entire `.plugin` directory to TVPaint's plugin folder.
 

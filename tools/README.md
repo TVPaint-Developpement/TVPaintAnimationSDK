@@ -96,6 +96,8 @@ MyPlugin.plugin/
 - Each bundle must contain exactly one platform directory (`MacOS`, `Windows`, or `Linux`)
 - Each platform directory must contain exactly one binary file
 - Resources may only contain language subdirectories among: `french`, `english`, `chinese`, `japanese`
+- Each language directory may only contain `.txt` and `.png` files
+- `.txt` files must be named exactly `strings.txt`
 
 ### Output Bundle Structure
 
@@ -124,6 +126,7 @@ Before creating any output, the tool checks:
 - Each input bundle is a valid `.plugin` directory
 - Each bundle targets exactly one platform (no duplicates)
 - Binary names are identical across all bundles (e.g. all named `PI_Flip`)
+- Resource files only use allowed types (`.txt` named `strings.txt`, or `.png`)
 - Shared resources have identical SHA-256 checksums (consistency guaranteed)
 
 If an error occurs during creation, the partially created output bundle is automatically removed.
