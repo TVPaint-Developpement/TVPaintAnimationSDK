@@ -347,7 +347,7 @@ These are not standalone plugins but source files intended to be compiled into o
 
 ## Tools
 
-### tvp-merge-plugin.py (`tools/`)
+### tvp_merge_plugin.py (`tools/`)
 
 A Python tool to verify and merge TVPaint `.plugin` bundles. It supports two subcommands:
 - **`verify`**: validate the structure of a single plugin bundle
@@ -355,10 +355,10 @@ A Python tool to verify and merge TVPaint `.plugin` bundles. It supports two sub
 
 ```bash
 # Validate a single bundle
-python tools/tvp-merge-plugin.py verify PI_Flip-MacOS.plugin
+python tools/tvp_merge_plugin.py verify PI_Flip-MacOS.plugin
 
 # Merge per-platform bundles into a universal bundle
-python tools/tvp-merge-plugin.py merge PI_Flip-Universal.plugin \
+python tools/tvp_merge_plugin.py merge PI_Flip-Universal.plugin \
     PI_Flip-MacOS.plugin \
     PI_Flip-Windows.plugin \
     PI_Flip-Linux.plugin
