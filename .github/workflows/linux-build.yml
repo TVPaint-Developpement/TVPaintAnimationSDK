@@ -24,11 +24,6 @@ jobs:
           ref: ${{ steps.get_branch_name.outputs.branch_name }}
           path: TVPaintAnimationSDK
 
-#      - name: Install Linux dependencies
-#        run: |
-#          sudo apt-get update
-#          sudo apt-get install -y ninja-build cmake
-
       - name: Configure CMake
         working-directory: TVPaintAnimationSDK
         run: |

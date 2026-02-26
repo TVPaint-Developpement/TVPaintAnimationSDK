@@ -1,0 +1,37 @@
+name: Python Tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Getting the name of the branch to test
+        id: get_branch_name
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "branch_name=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+          else
+            echo "branch_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout TVPaintAnimationSDK
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.get_branch_name.outputs.branch_name }}
+          path: TVPaintAnimationSDK
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install pytest
+        run: pip install pytest
+
+      - name: Run Python tests
+        working-directory: TVPaintAnimationSDK
+        run: pytest tools/tests/
