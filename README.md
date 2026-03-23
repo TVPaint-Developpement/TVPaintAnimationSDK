@@ -94,32 +94,29 @@ After running `ninja install`, the SDK is organized as follows:
 ├── include/
 │   └── TVPaintAnimationSDK/
 │       ├── TVPaintSDK.h                    # C SDK master include
-│       ├── pi-basics.h                     # C SDK headers (.h)
-│       ├── pi-main.h
-│       ├── pi-filter.h
-│       ├── ... (21 C headers total)
+│       ├── pi-basics.h                     # C SDK headers (.h, 20 total)
+│       ├── ...
 │       ├── TVPaintSDK.hpp                  # C++ SDK master include
-│       ├── Plugin.hpp                      # C++ SDK headers (.hpp)
-│       ├── Window.hpp
-│       ├── Button.hpp
+│       ├── Plugin.hpp                      # C++ SDK headers (.hpp, 24 total)
 │       ├── Button-*.hpp                    # 16 specialized button types
-│       └── ... (24 C++ headers total)
+│       └── ...
 │
-├── lib/
-│   ├── cmake/
-│   │   └── TVPaintAnimationSDK/
-│   │       ├── TVPaintAnimationSDKConfig.cmake
-│   │       ├── TVPaintAnimationSDKConfigVersion.cmake
-│   │       ├── TVPaintAnimationSDKTargets.cmake
-│   │       ├── TVPaintAnimationSDKUtilities.cmake    # Utility functions (create_plugin_bundle)
-│   │       ├── TVPaintAnimationSDK-CPPConfig.cmake
-│   │       ├── TVPaintAnimationSDK-CPPConfigVersion.cmake
-│   │       └── TVPaintAnimationSDK-CPPTargets.cmake
-│   ├── pkgconfig/
-│   │   ├── TVPaintAnimationSDK.pc
-│   │   └── TVPaintAnimationSDK-CPP.pc
-│   ├── libTVPaintAnimationSDK.(a|so|dll)      # C SDK static library
-│   └── libTVPaintAnimationSDK-CPP.(a|so|dll)  # C++ SDK static library
+└── lib/
+    ├── cmake/
+    │   ├── TVPaintAnimationSDK/
+    │   │   ├── TVPaintAnimationSDKConfig.cmake
+    │   │   ├── TVPaintAnimationSDKConfigVersion.cmake
+    │   │   ├── TVPaintAnimationSDKTargets.cmake
+    │   │   └── TVPaintAnimationSDKUtilities.cmake    # Utility functions
+    │   └── TVPaintAnimationSDK-CPP/
+    │       ├── TVPaintAnimationSDK-CPPConfig.cmake
+    │       ├── TVPaintAnimationSDK-CPPConfigVersion.cmake
+    │       └── TVPaintAnimationSDK-CPPTargets.cmake
+    ├── pkgconfig/
+    │   ├── TVPaintAnimationSDK.pc
+    │   └── TVPaintAnimationSDK-CPP.pc
+    ├── libTVPaintAnimationSDK.(a|so|dll)      # C SDK static library
+    └── libTVPaintAnimationSDK-CPP.(a|so|dll)  # C++ SDK static library
 ```
 
 ## Plugin Creation
@@ -132,11 +129,11 @@ TVPaint plugins are built as dynamic libraries with a `.plugin` bundle structure
 
 Creates the platform-specific `.plugin` bundle structure after the build. The bundle name automatically includes the OS suffix:
 
-| Platform | Output |
-|----------|--------|
-| macOS    | `PluginName-MacOS.plugin/Contents/MacOS/PluginName` |
+| Platform | Output                                                      |
+|----------|-------------------------------------------------------------|
+| macOS    | `PluginName-MacOS.plugin/Contents/MacOS/PluginName`         |
 | Windows  | `PluginName-Windows.plugin/Contents/Windows/PluginName.dll` |
-| Linux    | `PluginName-Linux.plugin/Contents/Linux/libPluginName.so` |
+| Linux    | `PluginName-Linux.plugin/Contents/Linux/libPluginName.so`   |
 
 Must be called before `copy_resources_to_bundle()`.
 
