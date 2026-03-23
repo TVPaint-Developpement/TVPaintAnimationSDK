@@ -19,10 +19,10 @@ python tvp_merge_plugin.py <command> [options]
 
 #### Commands
 
-| Command | Description |
-|---|---|
-| `verify` | Validate the structure of a single plugin bundle |
-| `merge` | Merge multiple per-platform bundles into a universal bundle |
+| Command  | Description                                                 |
+|----------|-------------------------------------------------------------|
+| `verify` | Validate the structure of a single plugin bundle            |
+| `merge`  | Merge multiple per-platform bundles into a universal bundle |
 
 Run `python tvp_merge_plugin.py --help` or `python tvp_merge_plugin.py <command> --help` for details.
 
@@ -34,10 +34,10 @@ Run `python tvp_merge_plugin.py --help` or `python tvp_merge_plugin.py <command>
 python tvp_merge_plugin.py verify [--verbose] <plugin>
 ```
 
-| Argument | Description |
-|---|---|
-| `plugin` | Path to the plugin bundle to validate (`.plugin` extension required) |
-| `--verbose` | Show detailed messages about the validation steps |
+| Argument    | Description                                                          |
+|-------------|----------------------------------------------------------------------|
+| `plugin`    | Path to the plugin bundle to validate (`.plugin` extension required) |
+| `--verbose` | Show detailed messages about the validation steps                    |
 
 #### Example
 
@@ -55,11 +55,11 @@ Checks that the bundle has the correct directory structure, contains exactly one
 python tvp_merge_plugin.py merge [--verbose] [--dry-run] <output> <input1> <input2> [input3]
 ```
 
-| Argument | Description |
-|---|---|
-| `output` | Output bundle path (must have `.plugin` extension) |
-| `inputs` | 2 or 3 input bundles (one per platform, `.plugin` extension required) |
-| `--dry-run` | Validate inputs and show what would be done without creating any output |
+| Argument    | Description                                                                               |
+|-------------|-------------------------------------------------------------------------------------------|
+| `output`    | Output bundle path (must have `.plugin` extension)                                        |
+| `inputs`    | 2 or 3 input bundles (one per platform, `.plugin` extension required)                     |
+| `--dry-run` | Validate inputs and show what would be done without creating any output                   |
 | `--verbose` | Show detailed messages about operations being performed (always enabled with `--dry-run`) |
 
 #### Example
