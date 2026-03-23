@@ -20,12 +20,10 @@ Both SDKs are built as static libraries and can be used independently or togethe
 - [Build Options](#build-options)
 - [Installation Structure](#installation-structure)
 - [Plugin Creation](#plugin-creation)
-  - [C Plugin Example](#c-plugin-example)
-  - [C++ Plugin Example](#c-plugin-example-1)
 - [Examples](#examples)
 - [Tools](#tools)
 - [Documentation](#documentation)
-  - [Generating API Documentation](#generating-api-documentation)
+- [License](#license)
 
 ## Requirements
 
@@ -148,7 +146,48 @@ Copies the contents of `RESOURCES_DIR` into the `Contents/Resources/` directory 
 
 `create_plugin_bundle()` must be called first, as this function relies on the bundle name it sets.
 
+### Bundle Structure
+
+The resulting plugin bundle has the following layout:
+
+```
+MyPlugin-<OS>.plugin/
+└── Contents/
+    ├── MacOS/          # or Windows/ or Linux/
+    │   └── MyPlugin    # binary (.dll on Windows, .so on Linux)
+    └── Resources/      # optional, copied via copy_resources_to_bundle()
+        ├── english/
+        │   ├── strings.txt   # localization strings
+        │   └── *.png         # optional images
+        ├── french/
+        └── ...               # chinese, japanese
+```
+
+**Resource file constraints:**
+- Language directories must be among: `english`, `french`, `chinese`, `japanese`
+- Each language directory may only contain `.png` files and a single `strings.txt` file
+
+To install your plugin, copy the entire `.plugin` directory to TVPaint's plugin folder.
+
 ### C Plugin Example
+
+This section walks through creating a minimal C plugin. See `examples/PI_Flip/` for a complete reference.
+
+#### Project Structure
+
+```
+MyPlugin/
+├── CMakeLists.txt
+├── myplugin.c
+├── myplugin.def          # Windows only: export symbols
+└── Resources/
+    ├── english/
+    │   └── strings.txt
+    └── french/
+        └── strings.txt
+```
+
+#### CMakeLists.txt
 
 ```cmake
 cmake_minimum_required( VERSION 3.25 FATAL_ERROR )
@@ -157,144 +196,118 @@ project( MyPlugin LANGUAGES C )
 find_package( TVPaintAnimationSDK REQUIRED )
 
 add_library( ${PROJECT_NAME} MODULE
-    my_plugin.c
-    $<$<PLATFORM_ID:Windows>:my_plugin.def>
+    myplugin.c
+    $<$<PLATFORM_ID:Windows>:myplugin.def>
 )
 
 create_plugin_bundle( ${PROJECT_NAME} )
 copy_resources_to_bundle( ${PROJECT_NAME}
                           ${CMAKE_CURRENT_SOURCE_DIR}/Resources )
 
+target_include_directories( ${PROJECT_NAME} PRIVATE . )
 target_link_libraries( ${PROJECT_NAME} PRIVATE TVPaintAnimationSDK::TVPaintAnimationSDK )
 ```
 
-**Minimal C plugin code (`my_plugin.c`):**
+`create_plugin_bundle()` and `copy_resources_to_bundle()` are CMake utility functions provided by the SDK (available after `find_package`). See [CMake Utility Functions](#cmake-utility-functions) for details.
 
-```c
-#include "TVPaintAnimationSDK/TVPaintSDK.h"
+#### myplugin.def (Windows only)
 
-// Plugin initialization
-int PI_Open(void) {
-    return 1;  // Success
-}
+On Windows, entry points must be explicitly exported via a `.def` file:
 
-// Plugin cleanup
-void PI_Close(void) {
-    // Cleanup code
-}
-
-// Show about dialog
-void PI_About(void) {
-    TVDisplayAbout("My Plugin\nVersion 1.0\n\nA simple plugin example");
-}
-
-// Main plugin entry point
-int PI_Msg(int iMsg, int iOpt1, int iOpt2, long lOpt1, long lOpt2, void* pOpt) {
-    switch(iMsg) {
-        case PIMSG_OPEN:
-            return PI_Open();
-        case PIMSG_CLOSE:
-            PI_Close();
-            return 1;
-        case PIMSG_ABOUT:
-            PI_About();
-            return 1;
-        default:
-            return 0;
-    }
-}
 ```
+LIBRARY      MyPlugin
+DESCRIPTION  'TVPaint plugin MyPlugin.DLL'
+
+EXPORTS
+  PI_Msg
+  PI_Open
+  PI_About
+  PI_Parameters
+  PI_Start
+  PI_Work
+  PI_Finish
+  PI_Close
+```
+
+#### Building
+
+```bash
+mkdir build
+cd build
+cmake .. -DTVPaintAnimationSDK_ROOT=/path/to/sdk/lib/cmake/TVPaintAnimationSDK -G Ninja
+ninja
+```
+
+Replace `/path/to/sdk/lib/cmake/TVPaintAnimationSDK` with the actual path to the SDK's CMake config directory.
+
+The resulting bundle will be in `build/MyPlugin-<OS>.plugin/`. Copy it to TVPaint's plugin folder to install it.
 
 ### C++ Plugin Example
 
+This section walks through creating a minimal C++ plugin. See `examples/PI_Demo/` for a complete reference.
+
+#### Project Structure
+
+```
+MyPlugin/
+├── CMakeLists.txt
+├── myplugin.cpp       # entry points + plugin class implementation
+├── myplugin.h         # plugin and window class declarations
+└── myplugin.def       # Windows only: export symbols
+```
+
+#### CMakeLists.txt
+
 ```cmake
 cmake_minimum_required( VERSION 3.25 FATAL_ERROR )
-project( MyCppPlugin LANGUAGES CXX )
+project( MyPlugin )
 
 find_package( TVPaintAnimationSDK-CPP REQUIRED )
 
 add_library( ${PROJECT_NAME} MODULE
-    my_cpp_plugin.cpp
-    $<$<PLATFORM_ID:Windows>:my_cpp_plugin.def>
+    myplugin.cpp
+    $<$<PLATFORM_ID:Windows>:myplugin.def>
 )
 
 target_compile_features( ${PROJECT_NAME} PRIVATE cxx_std_20 )
 
 create_plugin_bundle( ${PROJECT_NAME} )
-copy_resources_to_bundle( ${PROJECT_NAME}
-                          ${CMAKE_CURRENT_SOURCE_DIR}/Resources )
 
+target_include_directories( ${PROJECT_NAME} PRIVATE . )
 target_link_libraries( ${PROJECT_NAME} PRIVATE TVPaintAnimationSDK::TVPaintAnimationSDK-CPP )
 ```
 
-**Minimal C++ plugin code (`my_cpp_plugin.cpp`):**
+Note: the C++ SDK uses `find_package( TVPaintAnimationSDK-CPP )` and the target `TVPaintAnimationSDK::TVPaintAnimationSDK-CPP`, as opposed to their C counterparts. `copy_resources_to_bundle()` is optional — omit it if your plugin has no resources.
 
-```cpp
-#include "TVPaintAnimationSDK/TVPaintSDK.hpp"
+#### myplugin.def (Windows only)
 
-using namespace nSDK;
+```
+LIBRARY      MyPlugin
+DESCRIPTION  'TVPaint plugin MyPlugin.DLL'
 
-class MyPlugin : public cTV2Plugin {
-public:
-    // Plugin identification
-    const char* GetPluginName() const override {
-        return "My C++ Plugin";
-    }
-
-    const char* GetPluginVersion() const override {
-        return "1.0";
-    }
-
-    // Called when plugin is opened
-    void PI2Open() override {
-        // Initialize plugin
-    }
-
-    // Called when plugin is closed
-    void PI2Close() override {
-        // Cleanup
-    }
-
-    // Show about dialog
-    void PI2About() override {
-        TVDisplayAbout("My C++ Plugin\nVersion 1.0\n\nUsing C++ SDK");
-    }
-};
-
-// Export the plugin instance
-EXPORT_PLUGIN(MyPlugin)
+EXPORTS
+  PI_Open
+  PI_Msg
+  PI_About
+  PI_Parameters
+  PI_Start
+  PI_Work
+  PI_Finish
+  PI_Close
 ```
 
-### Building Your Plugin
+#### Building
 
 ```bash
 mkdir build
 cd build
-cmake .. -G Ninja
+cmake .. -DCMAKE_PREFIX_PATH=/path/to/sdk/lib/cmake/TVPaintAnimationSDK -G Ninja
 ninja
 ```
 
-The resulting plugin bundle will be created in `build/` with the following structure:
+Replace `/path/to/sdk/lib/cmake/TVPaintAnimationSDK` with the actual path to the SDK's CMake config directory.
 
-```
-MyPlugin-<OS>.plugin/
-└── Contents/
-    ├── MacOS/          # or Windows/ or Linux/
-    │   └── MyPlugin    # binary (.dll on Windows, .so on Linux)
-    ├── Resources/      # optional, copied via copy_resources_to_bundle()
-    │   ├── english/
-    │   │   ├── strings.txt   # localization strings
-    │   │   └── *.png         # optional images
-    │   ├── french/
-    │   └── ...               # chinese, japanese
-    └── Info.plist      # optional (macOS)
-```
-
-**Resource file constraints:**
-- Language directories must be among: `english`, `french`, `chinese`, `japanese`
-- Each language directory may only contain `.png` files and a single `strings.txt` file
-
-To install your plugin, copy the entire `.plugin` directory to TVPaint's plugin folder.
+The resulting bundle will be in `build/MyPlugin-<OS>.plugin/`. Copy it to TVPaint's plugin folder to install it.
 
 ## Examples
 
@@ -308,12 +321,14 @@ ninja
 Built plugins will be in `build/examples/PluginName/`.
 
 ### PI_Flip (`examples/PI_Flip/`)
+
 A simple C-based filter plugin that flips images horizontally or vertically.
 - Demonstrates basic filter structure
 - Shows PI_* callback functions
 - Good starting point for C plugin development
 
 ### PI_WaveForm (`examples/PI_WaveForm/`)
+
 An advanced C-based waveform monitor and vectorscope.
 - Complex image analysis
 - Custom GUI requesters
@@ -321,6 +336,7 @@ An advanced C-based waveform monitor and vectorscope.
 - Anti-aliased drawing utilities
 
 ### PI_Fade (`examples/PI_Fade/`)
+
 A C++ filter plugin that fades the image to black using the C++ SDK.
 - Demonstrates the C++ SDK with a real filter use case
 - Shows key handling (`NeedKeys`, `CreateKeys`)
@@ -329,6 +345,7 @@ A C++ filter plugin that fades the image to black using the C++ SDK.
 - Good reference for C++ filter plugins with preview support
 
 ### PI_Demo (`examples/PI_Demo/`)
+
 Comprehensive C++ example using the modern SDK wrapper.
 - Multi-tab interface
 - All button types (sliders, popups, text inputs, etc.)
@@ -339,6 +356,7 @@ Comprehensive C++ example using the modern SDK wrapper.
 - **Best reference for modern C++ plugin development**
 
 ### SDK_Utilities (`examples/SDK_Utilities/`)
+
 Reusable C utility helpers shared across C example plugins.
 - `colorpicker`: Color selection and block generation
 - `colorrange`: Color range handling
@@ -349,7 +367,7 @@ These are not standalone plugins but source files intended to be compiled into o
 
 ### tvp_merge_plugin.py (`tools/`)
 
-A Python tool to verify and merge TVPaint `.plugin` bundles. It supports two subcommands:
+A Python 3.10+ tool to verify and merge TVPaint `.plugin` bundles. It supports two subcommands:
 - **`verify`**: validate the structure of a single plugin bundle
 - **`merge`**: merge multiple per-platform bundles into a single universal multi-platform bundle
 
