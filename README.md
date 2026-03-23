@@ -393,49 +393,24 @@ For detailed information about plugin development:
 
 The SDK includes a Doxygen configuration file for generating comprehensive HTML documentation from the source code.
 
-**Requirements:**
-- Doxygen 1.9.0 or higher
-
-**To generate the documentation:**
+**Requirements:** Doxygen 1.9.0 or higher
 
 ```bash
 # From the SDK root directory
 doxygen Doxyfile
+
+# Open the generated documentation
+open docs/html/index.html        # macOS
+xdg-open docs/html/index.html    # Linux
+start docs/html/index.html       # Windows
 ```
-
-This will generate:
-- **HTML documentation** in `html/` directory
-- Complete API reference for both C and C++ SDKs
-- Class hierarchies, dependency graphs, and cross-referenced source code
-
-**To view the documentation:**
-
-```bash
-# Open the generated documentation in your browser
-open html/index.html        # macOS
-xdg-open html/index.html    # Linux
-start html/index.html       # Windows
-```
-
-The generated documentation includes:
-- Detailed function and class descriptions
-- Parameter documentation
-- Return value specifications
-- Code examples and usage notes
-- Cross-references between related APIs
-
-### Key Concepts
-
-- **Plugin Lifecycle**: Plugins implement specific entry points (PI_Open, PI_Close, PI_Msg, etc.)
-- **Filter Execution**: Sequence of Start → Work → Finish for frame processing
-- **Multi-Threading**: Use `TVRunMultiThread()` to parallelize image processing
-- **George Scripting**: Execute George commands via `TVSendCmd()` for automation
-- **Localization**: Support multiple languages through `.loc` files
 
 ## License
 
-See the LICENSE file for details.
+This project is licensed under the [MIT License](LICENSE).
+
+Copyright (c) 2026 TVPaint Development. You are free to use, modify, distribute, and include this SDK in your own projects (including commercial ones), provided you retain the copyright notice and license text.
 
 ## Support
 
-For questions and support, please visit the [TVPaint forums](https://forum.tvpaint.com) or contact [TVPaint Development Support](https://tvpaint.odoo.com/contactus-1)
+For questions and support, please visit the [TVPaint forums](https://forum.tvpaint.com) or contact [TVPaint Development Support](https://tvpaint.odoo.com/contactus-1).
