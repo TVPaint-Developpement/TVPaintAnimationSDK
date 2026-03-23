@@ -16,3 +16,14 @@ cmake-build-minsize/
 ### Doxygen ###
 html/
 latex/
+
+### Python ###
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+venv/
+.venv/
+env/
+.env/
+dist/
