@@ -23,6 +23,7 @@ Both SDKs are built as static libraries and can be used independently or togethe
 - [Examples](#examples)
 - [Tools](#tools)
 - [Documentation](#documentation)
+- [Deprecated API](#deprecated-api)
 - [License](#license)
 
 ## Requirements
@@ -404,6 +405,12 @@ open docs/html/index.html        # macOS
 xdg-open docs/html/index.html    # Linux
 start docs/html/index.html       # Windows
 ```
+
+## Deprecated API
+
+The SDK preserves backward compatibility by keeping deprecated symbols alongside their modern replacements. Deprecated symbols emit compiler warnings (`[[deprecated]]`) in C++17+ and C23.
+
+See [`DEPRECATED.md`](DEPRECATED.md) for the full list of deprecated symbols and their replacements, organized by header file.
 
 ## License
 
