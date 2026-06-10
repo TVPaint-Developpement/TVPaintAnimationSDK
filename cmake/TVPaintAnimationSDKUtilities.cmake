@@ -52,6 +52,13 @@ function( create_plugin_bundle TARGET_NAME )
         message( FATAL_ERROR "create_plugin_bundle: Unsupported platform. Only MacOS, Windows, and Linux are supported." )
     endif()
 
+    # Link the CRT statically so the plugin loads on machines without the
+    # Visual C++ Redistributable installed.
+    if( MSVC )
+        set_target_properties( ${TARGET_NAME} PROPERTIES
+            MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" )
+    endif()
+
     set( BUNDLE_NAME "${TARGET_NAME}-${BUNDLE_OS_SUFFIX}" )
 
     # Store the bundle name as a custom property so other functions can retrieve it

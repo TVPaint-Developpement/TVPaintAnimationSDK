@@ -136,6 +136,8 @@ Creates the platform-specific `.plugin` bundle structure after the build. The bu
 | Windows  | `PluginName-Windows.plugin/Contents/Windows/PluginName.dll` |
 | Linux    | `PluginName-Linux.plugin/Contents/Linux/libPluginName.so`   |
 
+On Windows (MSVC), this function automatically links the CRT statically (`/MT`/`/MTd`) so the plugin loads on machines without the Visual C++ Redistributable installed. This matches the CRT used by the SDK static libraries themselves.
+
 Must be called before `copy_resources_to_bundle()`.
 
 #### `copy_resources_to_bundle( TARGET_NAME  RESOURCES_DIR )`
