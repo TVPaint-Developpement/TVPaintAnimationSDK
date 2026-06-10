@@ -5,6 +5,12 @@ if( NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES )
     set( CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose Release or Debug" FORCE )
 endif()
 
+# On Windows/MSVC, link the CRT statically so plugins load on machines without
+# the Visual C++ Redistributable installed.
+if( MSVC )
+    set( CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" )
+endif()
+
 include( cmake/TVPaintAnimationSDKUtilities.cmake )
 include( GNUInstallDirs )
 
