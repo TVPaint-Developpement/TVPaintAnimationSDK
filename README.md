@@ -234,11 +234,11 @@ EXPORTS
 ```bash
 mkdir build
 cd build
-cmake .. -DTVPaintAnimationSDK_ROOT=/path/to/sdk/lib/cmake/TVPaintAnimationSDK -G Ninja
+cmake .. -DCMAKE_PREFIX_PATH=/path/to/sdk -G Ninja
 ninja
 ```
 
-Replace `/path/to/sdk/lib/cmake/TVPaintAnimationSDK` with the actual path to the SDK's CMake config directory.
+Replace `/path/to/sdk` with the SDK install prefix (the directory passed to `CMAKE_INSTALL_PREFIX` when installing the SDK, e.g. `C:/TVPaintSDK` or `/usr/local`).
 
 The resulting bundle will be in `build/MyPlugin-<OS>.plugin/`. Copy it to TVPaint's plugin folder to install it.
 
@@ -301,11 +301,11 @@ EXPORTS
 ```bash
 mkdir build
 cd build
-cmake .. -DCMAKE_PREFIX_PATH=/path/to/sdk/lib/cmake/TVPaintAnimationSDK -G Ninja
+cmake .. -DCMAKE_PREFIX_PATH=/path/to/sdk -G Ninja
 ninja
 ```
 
-Replace `/path/to/sdk/lib/cmake/TVPaintAnimationSDK` with the actual path to the SDK's CMake config directory.
+Replace `/path/to/sdk` with the SDK install prefix (the directory passed to `CMAKE_INSTALL_PREFIX` when installing the SDK, e.g. `C:/TVPaintSDK` or `/usr/local`).
 
 The resulting bundle will be in `build/MyPlugin-<OS>.plugin/`. Copy it to TVPaint's plugin folder to install it.
 
