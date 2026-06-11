@@ -44,7 +44,7 @@ install( TARGETS TVPaintAnimationSDK-CPP
 install( EXPORT TVPaintAnimationSDK-CPPTargets
          FILE TVPaintAnimationSDK-CPPTargets.cmake
          NAMESPACE TVPaintAnimationSDK::
-         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/TVPaintAnimationSDK
+         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/TVPaintAnimationSDK-CPP
          )
 
 include( CMakePackageConfigHelpers )
@@ -55,13 +55,13 @@ write_basic_package_version_file( "${CMAKE_CURRENT_BINARY_DIR}/TVPaintAnimationS
 
 configure_package_config_file( "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/TVPaintAnimationSDK-CPPConfig.cmake.in"
                                "${CMAKE_CURRENT_BINARY_DIR}/TVPaintAnimationSDK-CPPConfig.cmake"
-                               INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/TVPaintAnimationSDK
+                               INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/TVPaintAnimationSDK-CPP
                                )
 
 install( FILES
          "${CMAKE_CURRENT_BINARY_DIR}/TVPaintAnimationSDK-CPPConfig.cmake"
          "${CMAKE_CURRENT_BINARY_DIR}/TVPaintAnimationSDK-CPPConfigVersion.cmake"
-         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/TVPaintAnimationSDK
+         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/TVPaintAnimationSDK-CPP
          )
 
 configure_file( "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/TVPaintAnimationSDK-CPP.pc.in"
