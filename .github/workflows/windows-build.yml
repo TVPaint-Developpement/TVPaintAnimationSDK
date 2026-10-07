@@ -12,11 +12,16 @@ jobs:
       - name: Getting the name of the branch to compile
         id: get_branch_name
         shell: bash
+        # Through env, never ${{ }} inside the script: a quote in a branch name would break it, or inject into it.
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "branch_name=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            echo "branch_name=$HEAD_REF" >> "$GITHUB_OUTPUT"
           else
-            echo "branch_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "branch_name=$REF_NAME" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Checkout TVPaintAnimationSDK
