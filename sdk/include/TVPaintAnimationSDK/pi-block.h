@@ -1,10 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-block.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  Rectangular blocks of pixels (an "image").
-*/
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-block.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  Rectangular blocks of pixels (an "image").
+ */
 
 #ifndef __pi_block_HH
 #define __pi_block_HH

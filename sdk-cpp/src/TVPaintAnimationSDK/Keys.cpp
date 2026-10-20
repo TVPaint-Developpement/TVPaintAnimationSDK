@@ -1,12 +1,11 @@
-/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved.
- *
+/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved. */
+/**
  *  @file  Keys.cpp
  *  @ingroup  tvpl_SDK_CPP
  *
  *  @brief  TVPaint SDK for C++ : A keyset.
  * //TODO: //NAME: file+class
  */
-
 
 #include "TVPaintAnimationSDK/Keys.hpp"
 

@@ -1,10 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-preview.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  Previewing some shapes...
-*/
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-preview.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  Previewing some shapes...
+ */
 
 #ifndef __pi_preview_HH
 #define __pi_preview_HH

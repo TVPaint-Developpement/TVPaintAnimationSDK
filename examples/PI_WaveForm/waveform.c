@@ -1,9 +1,9 @@
-﻿/** @copyright (c) 1995-25 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  waveform.c
-*
-*  @brief  A vectorscope emulator.
-*/
+﻿/** @copyright (c) 1995-2025 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  waveform.c
+ *
+ *  @brief  A vectorscope emulator.
+ */
 
 #include <stdio.h>
 #include <stdlib.h>

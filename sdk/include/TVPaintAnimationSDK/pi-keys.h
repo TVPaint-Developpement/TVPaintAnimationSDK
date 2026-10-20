@@ -1,10 +1,10 @@
-/** @copyright (c) 2002-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-keys.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  xxxx
-*/
+/** @copyright (c) 2002-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-keys.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  xxxx
+ */
 
 #ifndef __pi_keys_HH
 #define __pi_keys_HH

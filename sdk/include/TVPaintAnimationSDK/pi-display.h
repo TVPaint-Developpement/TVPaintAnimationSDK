@@ -1,10 +1,10 @@
-/** @copyright (c) 2001-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-display.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  A display device.
-*/
+/** @copyright (c) 2001-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-display.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  A display device.
+ */
 
 #ifndef __pi_display_HH
 #define __pi_display_HH

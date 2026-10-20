@@ -1,10 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  TVPaintSDK.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  The one file to rul--err--include them all...
-*/
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  TVPaintSDK.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  The one file to rul--err--include them all...
+ */
 
 #ifndef __TVPaintSDK_HH
 #define __TVPaintSDK_HH

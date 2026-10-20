@@ -1,10 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-misc.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  Miscellaneous stuff that doesn't fit anywhere else.
-*/
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-misc.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  Miscellaneous stuff that doesn't fit anywhere else.
+ */
 
 #ifndef __pi_misc_HH
 #define __pi_misc_HH

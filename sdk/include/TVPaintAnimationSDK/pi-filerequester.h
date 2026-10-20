@@ -1,10 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-filerequester.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  The file requester utilities.
-*/
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-filerequester.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  The file requester utilities.
+ */
 
 #ifndef __pi_filerequester_HH
 #define __pi_filerequester_HH

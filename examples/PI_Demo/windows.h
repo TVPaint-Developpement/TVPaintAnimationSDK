@@ -1,10 +1,10 @@
-/** @copyright (c) 2005-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  tabs.c
-*  @ingroup  tvpa_demo_filter
-*
-*  @brief  The tab public interface.
-*/
+/** @copyright (c) 2005-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  windows.h
+ *  @ingroup  tvpa_demo_filter
+ *
+ *  @brief  The tab public interface.
+ */
 
 #ifndef __tabs_HH
 #define __tabs_HH

@@ -1,11 +1,10 @@
-/** @copyright (c) 2005-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  tab-preview.c
-*  @ingroup  tvpa_demo_filter
-*
-*  @brief  The tab for demonstrating the preview of some action.
-*/
-
+/** @copyright (c) 2005-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  tab-preview.cpp
+ *  @ingroup  tvpa_demo_filter
+ *
+ *  @brief  The tab for demonstrating the preview of some action.
+ */
 
 #include "TVPaintAnimationSDK/TVPaintSDK.hpp"
 

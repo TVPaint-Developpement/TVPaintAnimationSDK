@@ -1,10 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-stringfile.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  Access to configuration files.
-*/
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-stringfile.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  Access to configuration files.
+ */
 
 #ifndef __pi_stringfile_HH
 #define __pi_stringfile_HH

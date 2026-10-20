@@ -1,4 +1,9 @@
-
+/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  colorpicker.c
+ *
+ *  @brief
+ */
 
 #include "colorpicker.h"
 

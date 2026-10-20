@@ -1,10 +1,10 @@
-/** @copyright (c) 2002-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-imagesequence.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  An image sequence.
-*/
+/** @copyright (c) 2002-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-imagesequence.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  An image sequence.
+ */
 
 #ifndef __pi_imagesequence_HH
 #define __pi_imagesequence_HH

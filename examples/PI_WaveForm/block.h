@@ -1,9 +1,9 @@
-﻿/** @copyright (c) 1995-25 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  block.h
-*
-*  @brief  Utilities to work with PIBlock.
-*/
+﻿/** @copyright (c) 1995-2025 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  block.h
+ *
+ *  @brief  Utilities to work with PIBlock.
+ */
 
 #ifndef __block_HH
 #define __block_HH

@@ -1,5 +1,5 @@
-/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved.
- *
+/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved. */
+/**
  *  @file  Plugin.hpp
  *  @ingroup  tvpl_SDK_CPP
  *

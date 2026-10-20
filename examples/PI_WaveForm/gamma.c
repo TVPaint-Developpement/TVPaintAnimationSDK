@@ -1,10 +1,10 @@
-﻿/** @copyright (c) 1995-25 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  gamma.c
-*
-*  @brief  A better gamma function then the default one (which in fact only handles the gamma==1.0 case).
-*  Not used in this example but you can extend it as an exercise to include gamma, black and white controls.
-*/
+﻿/** @copyright (c) 1995-2025 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  gamma.c
+ *
+ *  @brief  A better gamma function then the default one (which in fact only handles the gamma==1.0 case).
+ *  Not used in this example but you can extend it as an exercise to include gamma, black and white controls.
+ */
 
 #include <math.h>
 

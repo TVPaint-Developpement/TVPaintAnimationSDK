@@ -1,10 +1,10 @@
-/** @copyright (c) 2002-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-profile.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  A profile.
-*/
+/** @copyright (c) 2002-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-profile.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  A profile.
+ */
 
 #ifndef __pi_profile_HH
 #define __pi_profile_HH

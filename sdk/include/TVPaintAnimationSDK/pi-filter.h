@@ -1,10 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-filter.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  The plugin description and the shared library entries.
-*/
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-filter.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  The plugin description and the shared library entries.
+ */
 
 #ifndef __pi_filter_HH
 #define __pi_filter_HH

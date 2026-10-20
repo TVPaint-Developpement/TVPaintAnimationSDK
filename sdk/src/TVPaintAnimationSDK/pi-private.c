@@ -1,10 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-private.c
-*  @ingroup  sdk_TVPA
-*
-*  @brief  The implementation of the plugin-side of the SDK.
-*/
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-private.c
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  The implementation of the plugin-side of the SDK.
+ */
 
 #ifndef __TVPaintSDK_HH
 #include "TVPaintAnimationSDK/TVPaintSDK.h"

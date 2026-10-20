@@ -1,4 +1,9 @@
-
+/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  colorrange.c
+ *
+ *  @brief
+ */
 
 #include "colorrange.h"
 

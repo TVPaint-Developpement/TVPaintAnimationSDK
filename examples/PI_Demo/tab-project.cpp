@@ -1,11 +1,10 @@
-/** @copyright (c) 2005-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  tab-meta.cpp
-*  @ingroup  tvpa_demo_filter
-*
-*  @brief  The tab for demonstrating meta/hud access.
-*/
-
+/** @copyright (c) 2005-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  tab-project.cpp
+ *  @ingroup  tvpa_demo_filter
+ *
+ *  @brief  The tab for demonstrating meta/hud access.
+ */
 
 #include "TVPaintAnimationSDK/TVPaintSDK.hpp"
 

@@ -1,11 +1,10 @@
-/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved.
- *
+/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved. */
+/**
  *  @file  Button-TextString.cpp
  *  @ingroup  tvpl_SDK_CPP
  *
  *  @brief  TVPaint SDK for C++ : A textfield for editing an integer.
  */
-
 
 #include "TVPaintAnimationSDK/Button-TextString.hpp"
 

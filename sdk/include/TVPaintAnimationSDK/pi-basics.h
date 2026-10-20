@@ -1,10 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-basics.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  The basic types used by the SDK.
-*/
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-basics.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  The basic types used by the SDK.
+ */
 
 #ifndef __pi_basics_HH
 #define __pi_basics_HH

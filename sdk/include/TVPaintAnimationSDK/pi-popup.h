@@ -1,10 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-popup.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  Popup menus.
-*/
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-popup.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  Popup menus.
+ */
 
 #ifndef __pi_popup_HH
 #define __pi_popup_HH

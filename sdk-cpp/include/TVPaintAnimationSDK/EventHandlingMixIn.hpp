@@ -1,6 +1,6 @@
-/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved.
- *
- *  @file  SDK-EventHandlingMixIn.hpp
+/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  EventHandlingMixIn.hpp
  *  @ingroup  tvpl_SDK_CPP
  *
  *  @brief  TVPaint SDK for C++ : A mix-in for handling events.

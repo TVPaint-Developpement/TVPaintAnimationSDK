@@ -1,10 +1,10 @@
-/** @copyright (c) 2005-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  preview.c
-*  @ingroup  tvpa_demo_filter
-*
-*  @brief  A button for displaying previews.
-*/
+/** @copyright (c) 2005-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  preview.cpp
+ *  @ingroup  tvpa_demo_filter
+ *
+ *  @brief  A button for displaying previews.
+ */
 
 #include "preview.h"
 

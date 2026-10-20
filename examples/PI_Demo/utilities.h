@@ -1,10 +1,10 @@
-/** @copyright (c) 2005-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  utilities.h
-*  @ingroup  tvpa_demo_filter
-*
-*  @brief  Some utility functions for the demo plugin.
-*/
+/** @copyright (c) 2005-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  utilities.h
+ *  @ingroup  tvpa_demo_filter
+ *
+ *  @brief  Some utility functions for the demo plugin.
+ */
 
 #pragma  once
 

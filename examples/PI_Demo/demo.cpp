@@ -1,11 +1,10 @@
-/** @copyright (c) 2005-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  main.c
-*  @ingroup  tvpa_demo_filter
-*
-*  @brief  A demo filter.
-*/
-
+/** @copyright (c) 2005-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  demo.cpp
+ *  @ingroup  tvpa_demo_filter
+ *
+ *  @brief  A demo filter.
+ */
 
 #include  "demo.h"
 

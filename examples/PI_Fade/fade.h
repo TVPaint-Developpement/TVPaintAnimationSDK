@@ -1,5 +1,5 @@
-/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved.
- *
+/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved. */
+/**
  *  @file  fade.h
  *
  *  @brief  The "fade" demo plugin.

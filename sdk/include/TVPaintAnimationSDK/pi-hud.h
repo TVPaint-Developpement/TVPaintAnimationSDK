@@ -1,10 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-hud.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  Drawing in the HUD.
-*/
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-hud.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  Drawing in the HUD.
+ */
 
 #ifndef __pi_hud_HH
 #define __pi_hud_HH

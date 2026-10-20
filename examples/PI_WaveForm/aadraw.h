@@ -1,9 +1,9 @@
-﻿/** @copyright (c) 1995-25 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  aadraw.h
-*
-*  @brief  Antialiased drawing.
-*/
+﻿/** @copyright (c) 1995-2025 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  aadraw.h
+ *
+ *  @brief  Antialiased drawing.
+ */
 
 #ifndef __aadraw_HH
 #define __aadraw_HH

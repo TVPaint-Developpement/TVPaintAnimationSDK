@@ -1,11 +1,10 @@
-/** @copyright (c) 2005-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  tab-george.cpp
-*  @ingroup  tvpa_demo_filter
-*
-*  @brief  The tab for demonstrating George calls.
-*/
-
+/** @copyright (c) 2005-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  tab-george.cpp
+ *  @ingroup  tvpa_demo_filter
+ *
+ *  @brief  The tab for demonstrating George calls.
+ */
 
 #include "TVPaintAnimationSDK/TVPaintSDK.hpp"
 

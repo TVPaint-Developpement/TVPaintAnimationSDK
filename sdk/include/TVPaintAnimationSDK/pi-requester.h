@@ -1,11 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-requester.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  Everything to make a nice window for your plugin.
-*/
-
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-requester.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  Everything to make a nice window for your plugin.
+ */
 
 #ifndef __pi_requester_HH
 #define __pi_requester_HH

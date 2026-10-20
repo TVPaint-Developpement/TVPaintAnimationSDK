@@ -1,10 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-main.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  The main functions.
-*/
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-main.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  The main functions.
+ */
 
 #ifndef __pi_main_HH
 #define __pi_main_HH

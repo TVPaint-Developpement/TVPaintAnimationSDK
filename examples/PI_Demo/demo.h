@@ -1,6 +1,7 @@
-/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved.
- *
+/** @copyright (c) 2025 TVPaint Developpement. All Rights Reserved. */
+/**
  *  @file  demo.h
+ *  @ingroup  tvpa_demo_filter
  *
  *  @brief  The demo plugin.
  */

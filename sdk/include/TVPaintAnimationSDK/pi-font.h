@@ -1,10 +1,10 @@
-/** @copyright (c) 2002-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-font.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  A vectorial font
-*/
+/** @copyright (c) 2002-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-font.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  A vectorial font
+ */
 
 #ifndef __pi_font_HH
 #define __pi_font_HH

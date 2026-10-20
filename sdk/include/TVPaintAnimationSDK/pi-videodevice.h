@@ -1,10 +1,10 @@
-/** @copyright (c) 2001-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-videodevice.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  An input video device, like a wecam.
-*/
+/** @copyright (c) 2001-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-videodevice.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  An input video device, like a wecam.
+ */
 
 #ifndef __pi_videodevice_HH
 #define __pi_videodevice_HH

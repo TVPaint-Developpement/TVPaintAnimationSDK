@@ -1,11 +1,10 @@
-/** @copyright (c) 2005-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  tab-slider.c
-*  @ingroup  tvpa_demo_filter
-*
-*  @brief  The tab for demonstrating sliders.
-*/
-
+/** @copyright (c) 2005-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  tab-slider.cpp
+ *  @ingroup  tvpa_demo_filter
+ *
+ *  @brief  The tab for demonstrating sliders.
+ */
 
 #include "TVPaintAnimationSDK/TVPaintSDK.hpp"
 

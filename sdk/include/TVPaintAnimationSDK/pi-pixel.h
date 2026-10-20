@@ -1,10 +1,10 @@
-/** @copyright (c) 1995-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  pi-pixel.h
-*  @ingroup  sdk_TVPA
-*
-*  @brief  The 32bit RGBA pixel.
-*/
+/** @copyright (c) 1995-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  pi-pixel.h
+ *  @ingroup  sdk_TVPA
+ *
+ *  @brief  The 32bit RGBA pixel.
+ */
 
 #ifndef __pi_pixel_HH
 #define __pi_pixel_HH

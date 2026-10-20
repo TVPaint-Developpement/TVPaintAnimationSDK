@@ -1,11 +1,10 @@
-/** @copyright (c) 2005-24 TVPaint Developpement. All Rights Reserved.
-*
-*  @file  tab-button.cpp
-*  @ingroup  tvpa_demo_filter
-*
-*  @brief  The tab for demonstrating button parameters.
-*/
-
+/** @copyright (c) 2005-2024 TVPaint Developpement. All Rights Reserved. */
+/**
+ *  @file  tab-button.cpp
+ *  @ingroup  tvpa_demo_filter
+ *
+ *  @brief  The tab for demonstrating button parameters.
+ */
 
 #include "TVPaintAnimationSDK/TVPaintSDK.hpp"
 
